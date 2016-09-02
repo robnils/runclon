@@ -5,3 +5,20 @@ from django.shortcuts import render, render_to_response
 def index(request):
     return render_to_response('index.html', request)
 
+
+def update_status(request):
+
+    if request.method == 'POST':
+        pass
+
+
+def get_customer(request):
+
+    id = request['id']
+
+
+def get_customers(request):
+    ids = request['ids']
+
+
+
