@@ -1,10 +1,39 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>runclon</title>
+    <script src='{% static "js/jquery-2.1.4.min.js"%}'></script>
 </head>
-<body>
 
+<body style="margin: 0;">
+
+    {% csrf_token %}
+    <div id="header">
+
+        <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a href="/rcgeneral/index" class="navbar-brand kollect-font">RUNCLON</a>
+          </div>
+        {% if user.is_authenticated  %}
+
+
+          {% endif %}
+
+        </div>
+        </nav>
+        {% if user.is_authenticated  %}
+
+        {% endif %}
+    </div>
+    {% block content %}{% endblock %}
+        <script>
+            $(document).ready(function(){
+
+            });
+        </script>
 </body>
 </html>
