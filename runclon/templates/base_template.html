@@ -5,7 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>runclon</title>
+
+    <!-- JS -->
     <script src='{% static "js/jquery-2.1.4.min.js"%}'></script>
+    <script src='{% static "js/bootstrap.js"%}'></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href='{% static "css/bootstrap.css"%}'>
 </head>
 
 <body style="margin: 0;">
@@ -31,7 +37,7 @@
     </div>
     {% block content %}{% endblock %}
         <script>
-            $(document).ready(function(){
+            $(document).ready(function() {
 
             });
         </script>
