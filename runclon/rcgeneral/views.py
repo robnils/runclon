@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
-from rcgeneral.models import Customer
+from rcgeneral.models import Registration
 
 
 def index(request):
@@ -28,8 +28,8 @@ def register(request):
         number = request.POST.get('number')
 
         try:
-            Customer.add(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category, club=club,
-                         email=email, number=number)
+            Registration.add(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category, club=club,
+                             email=email, number=number)
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
@@ -43,11 +43,10 @@ def get_customer(request):
     id = request['id']
 
 
-def get_customers(request):
+def get_registrations(request):
     if request.method == 'GET':
         try:
-            c = Customer()
-            customers = c.get_customers()
+            customers = Registration.get_registrations()
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})

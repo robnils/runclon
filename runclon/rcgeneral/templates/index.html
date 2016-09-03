@@ -20,6 +20,7 @@
         </div>
         <div align="center">
             <button id="register" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Register!</button>
+            <button id="view_registrations" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">View</button>
         </div>
     </div>
 
@@ -30,7 +31,9 @@
         }
 
         function register_customer(data) {
+            // TODO refactor to http://kyleschaeffer.com/development/the-perfect-jquery-ajax-request/
             data['csrfmiddlewaretoken'] = get_csrf_token();
+            $("#register").prop('disabled', true);
             $.ajax({
                 method: "POST",
                 url: "/rcgeneral/register",
@@ -38,16 +41,13 @@
             })
             .done(function (msg) {
                 if (msg['success'] == true) {
-                    // Highlight the template that was loaded
-                    //$("#claim_id_area_plugin").data('highlight')(element);
-                    console.log("worked");
+                    swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
                 } else {
-                    //swal({title: "Template loading error", text: msg['reason'], timer: 3000, type: "error"});
-                    console.log("didn't work");
-
+                    swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
                 }
                 //$(element).parent().parent().find(".glyphicon-refresh").hide();
             });
+            $("#register").prop('disabled', false);
         }
 
         function bind_register_button() {
@@ -66,8 +66,42 @@
                 register_customer(data);
             });
         }
+
+        function get_registrations() {
+            /*
+            * ,
+                data: {
+                    csrfmiddlewaretoken: get_csrf_token()
+                }
+            * */
+            var data = {
+                'csrfmiddlewaretoken': get_csrf_token()
+            };
+            $("#view_registrations").prop('disabled', true);
+            $.ajax({
+                method: "GET",
+                url: "/rcgeneral/get_registrations"
+            })
+            .done(function (msg) {
+                if (msg['success'] == true) {
+                    return msg['registrations'];
+                } else {
+                    swal({title: "Could not get registrations!", text: msg['reason'], timer: 3000, type: "error"});
+                    return null;
+                }
+            });
+            $("#view_registrations").prop('disabled', false);
+        }
+        function bind_view_button() {
+            $("#view_registrations").click(function () {
+                var reglist = get_registrations();
+                console.log(reglist);
+            });
+        }
+
         $(document).ready(function () {
             bind_register_button();
+            bind_view_button();
         });
 
     </script>

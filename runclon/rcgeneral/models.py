@@ -6,28 +6,49 @@ from django.db import models
 
 
 # Create your models here.
-class Customer(models.Model):
-    bib = models.IntegerField(default='')
-    first_name = models.CharField(max_length=40, default='')
-    surname = models.CharField(max_length=40, default='')
+from django.forms import model_to_dict
+
+
+class Registration(models.Model):
+    bib = models.CharField(max_length=10, default='')
+    first_name = models.CharField(max_length=60, default='')
+    surname = models.CharField(max_length=60, default='')
     gender = models.CharField(max_length=10, default='')
     age_category = models.CharField(max_length=10, default='')
-    club = models.CharField(max_length=10, default='')
-    email = models.CharField(max_length=10, default='')
-    number = models.CharField(max_length=10, default='')
-    status = models.CharField(max_length=10, default='pending')
+    club = models.CharField(max_length=80, default='')
+    email = models.CharField(max_length=180, default='')
+    number = models.CharField(max_length=40, default='')
+    status = models.CharField(max_length=50, default='pending')
     # pending, registered, (started), finished
-    updated = models.TimeField(max_length=10)
+    updated = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
     def add(bib='', first_name='', surname='', gender='', age_category='', club='', email='', number=''):
-        now = datetime.datetime.now()
-        cust = Customer.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
-                                       club=club, email=email, number=number, status='pending', updated=now)
+        cust = Registration.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
+                                           club=club, email=email, number=number, status='pending')
 
         cust.save()
 
-    def get_customers(self):
-        return self.Customer_set.all()
+    @staticmethod
+    def get_registrations_as_obj():
+        return Registration.objects.all()
 
+    @staticmethod
+    def get_registrations_as_dict():
+        # Return a list of dictionarys representing each object
+        return [Registration.serial_model(reg) for reg in Registration.get_registrations_as_obj()]
 
+    @staticmethod
+    def serial_model(reg):
+        opts = reg._meta.fields
+        modeldict = model_to_dict(reg, exclude = ['status', 'updated', 'id'])
+        print modeldict
+        for m in opts:
+            if m.is_relation:
+                foreignkey = getattr(reg, m.name)
+                if foreignkey:
+                    try:
+                        modeldict[m.name] = Registration.serial_model(foreignkey)
+                    except:
+                        pass
+        return modeldict
