@@ -84,7 +84,10 @@
             })
             .done(function (msg) {
                 if (msg['success'] == true) {
-                    return msg['registrations'];
+                    var registrations = msg['registrations'];
+                    for(var lst_idx=0; lst_idx < registrations.length; lst_idx++) {
+                        console.log(registrations[lst_idx]);
+                    }
                 } else {
                     swal({title: "Could not get registrations!", text: msg['reason'], timer: 3000, type: "error"});
                     return null;
@@ -94,8 +97,8 @@
         }
         function bind_view_button() {
             $("#view_registrations").click(function () {
-                var reglist = get_registrations();
-                console.log(reglist);
+                get_registrations();
+
             });
         }
 

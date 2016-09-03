@@ -42,15 +42,14 @@ def register(request):
 def get_customer(request):
     id = request['id']
 
-
 def get_registrations(request):
     if request.method == 'GET':
         try:
-            customers = Registration.get_registrations()
+            registrations = Registration.get_registrations_as_dict()
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
 
-        return JsonResponse({'success': True, 'customers': customers})
+        return JsonResponse({'success': True, 'registrations': registrations})
 
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
