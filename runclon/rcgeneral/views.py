@@ -40,12 +40,36 @@ def register(request):
 
 
 def get_customer(request):
-    id = request['id']
+    bib = request['bib']
+    if request.method == 'GET':
+        try:
+            registration = Registration.get_registration_as_dict(bib)
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+
+        return JsonResponse({'success': True, 'registrations': registration})
+
+    return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
+
+
+def clear_all(request):
+    if request.method == 'GET':
+        try:
+            response = Registration.truncate()
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
+
 
 def get_registrations(request):
     if request.method == 'GET':
         try:
-            registrations = Registration.get_registrations_as_dict()
+            registrations = Registration.get_all_registrations_as_dict()
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})

@@ -19,16 +19,17 @@
             <input id="number" style="text-align:center;" placeholder="number...">
         </div>
         <div align="center">
-            <button id="register" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Register!</button>
+            <button id="add" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Add!</button>
             <button id="view_registrations" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">View</button>
+            <button id="clear_all" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Clear All</button>
         </div>
     </div>
 
     <script>
         function get_csrf_token() {
-            var csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-            return csrf;
-        }
+                var csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                return csrf;
+            }
 
         function register_customer(data) {
             // TODO refactor to http://kyleschaeffer.com/development/the-perfect-jquery-ajax-request/
@@ -48,23 +49,6 @@
                 //$(element).parent().parent().find(".glyphicon-refresh").hide();
             });
             $("#register").prop('disabled', false);
-        }
-
-        function bind_register_button() {
-            $("#register").click(function () {
-                var data = {
-                    'bib': $("#bib").val(),
-                    'first_name': $("#first_name").val(),
-                    'surname': $("#surname").val(),
-                    'gender': $("#gender").val(),
-                    'age_category': $("#age_category").val(),
-                    'club': $("#club").val(),
-                    'email': $("#email").val(),
-                    'number': $("#number").val()
-                };
-                console.log(data);
-                register_customer(data);
-            });
         }
 
         function get_registrations() {
@@ -95,18 +79,60 @@
             });
             $("#view_registrations").prop('disabled', false);
         }
+
+        function clear_all() {
+            $("#view_registrations").prop('disabled', true);
+            $.ajax({
+                method: "GET",
+                url: "/rcgeneral/clear_all"
+            })
+            .done(function (msg) {
+                if (msg['success'] == true) {
+                    swal({title: "Done!", text: "Successfully removed all registrations!", timer: 3000, type: "success"});
+                } else {
+                    swal({title: "Could not get registrations!", text: msg['reason'], timer: 3000, type: "error"});
+                    return null;
+                }
+            });
+            $("#view_registrations").prop('disabled', false);
+        }
+
         function bind_view_button() {
             $("#view_registrations").click(function () {
                 get_registrations();
-
             });
         }
 
+        function bind_clear_all_button() {
+            $("#clear_all").click(function () {
+                clear_all();
+            });
+        }
+
+        function bind_register_button() {
+            $("#register").click(function () {
+                var data = {
+                    'bib': $("#bib").val(),
+                    'first_name': $("#first_name").val(),
+                    'surname': $("#surname").val(),
+                    'gender': $("#gender").val(),
+                    'age_category': $("#age_category").val(),
+                    'club': $("#club").val(),
+                    'email': $("#email").val(),
+                    'number': $("#number").val()
+                };
+                console.log(data);
+                register_customer(data);
+            });
+        }
+    </script>
+
+    <script>
         $(document).ready(function () {
             bind_register_button();
             bind_view_button();
+            bind_clear_all_button();
         });
-
     </script>
 
 {% endblock %}

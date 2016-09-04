@@ -14,7 +14,7 @@ class Registration(models.Model):
     club = models.CharField(max_length=80, default='')
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
-    status = models.CharField(max_length=50, default='pending')
+    status = models.CharField(max_length=50, default='PENDING')
     # pending, registered, (started), finished
     updated = models.DateTimeField(auto_now_add=True)
 
