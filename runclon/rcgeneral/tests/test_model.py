@@ -93,5 +93,18 @@ class TestRegistration(TestCase):
             'status': "pending",
         })
 
+    def test_register(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+
+        # Change status
+        Registration.register(bib="007")
+        regobj = Registration.get_registration_as_obj(bib="007")
+        self.assertEquals(regobj.status, Registration.REGISTERED)
 
 

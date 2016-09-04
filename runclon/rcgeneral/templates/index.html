@@ -20,9 +20,10 @@
                 <input id="number" style="text-align:center;" placeholder="number...">
             </div>
             <div align="center">
-                <button id="add" class="col-sm-6" style="width: 100px; height: 30px;">Add!</button>
+                <button id="add" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Add!</button>
                 <button id="view_registrations" class="col-sm-6" style="width: 100px; height: 30px;">View</button>
-                <button id="clear_all" class="col-sm-6" style="width: 100px; height: 30px;">Clear All</button>
+                <button id="clear_all" class="col-sm-6 btn-danger" style="width: 100px; height: 30px;">Clear All</button>
+                <button id="register" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Register</button>
             </div>
         </div>
         <div class="row" style="width: 100%; margin: 15px 15px">
@@ -36,7 +37,7 @@
                 return csrf;
             }
 
-        function add_customer(data) {
+        function add_registration(data) {
             // TODO refactor to http://kyleschaeffer.com/development/the-perfect-jquery-ajax-request/
             data['csrfmiddlewaretoken'] = get_csrf_token();
             $("#add").prop('disabled', true);
@@ -119,7 +120,35 @@
                     'number': $("#number").val()
                 };
                 console.log(data);
-                add_customer(data);
+                add_registration(data);
+            });
+        }
+
+        function register(data) {
+            data['csrfmiddlewaretoken'] = get_csrf_token();
+            $("#add").prop('disabled', true);
+            $.ajax({
+                method: "POST",
+                url: "/rcgeneral/register",
+                data: data
+            })
+            .done(function (msg) {
+                if (msg['success'] == true) {
+                    swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+                } else {
+                    swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+                }
+                //$(element).parent().parent().find(".glyphicon-refresh").hide();
+            });
+            $("#add").prop('disabled', false);
+        }
+
+        function bind_register_button() {
+            $("#register").click(function () {
+                var data = {
+                    'bib': $("#bib").val()
+                };
+                register(data);
             });
         }
     </script>
@@ -143,6 +172,7 @@
             bind_add_button();
             bind_view_button();
             bind_clear_all_button();
+            bind_register_button();
         });
     </script>
 

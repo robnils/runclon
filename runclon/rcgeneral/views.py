@@ -16,6 +16,18 @@ def update_status(request):
     return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
 
 
+def register(request):
+    if request.method == 'POST':
+        bib = request.POST.get('bib')
+        try:
+            Registration.register(bib)
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
+
+
 def add(request):
     if request.method == 'POST':
         bib = request.POST.get('bib')
@@ -33,9 +45,7 @@ def add(request):
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
-
         return JsonResponse({'success': True})
-
     return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
 
 
@@ -47,9 +57,7 @@ def get_customer(request):
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
-
         return JsonResponse({'success': True, 'registrations': registration})
-
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
 
 
@@ -60,9 +68,7 @@ def clear_all(request):
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
-
         return JsonResponse({'success': True})
-
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
 
 
@@ -73,7 +79,5 @@ def get_registrations(request):
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
-
         return JsonResponse({'success': True, 'registrations': registrations})
-
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})

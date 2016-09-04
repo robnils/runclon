@@ -4,8 +4,13 @@ from django.db import models
 # Create your models here.
 from django.forms import model_to_dict
 
-
 class Registration(models.Model):
+
+    # Statuses
+    PENDING = "PENDING"
+    REGISTERED = "REGISTERED"
+    COMPLETED = "COMPLETED"
+
     bib = models.CharField(max_length=10, unique=True)
     first_name = models.CharField(max_length=60, default='')
     surname = models.CharField(max_length=60, default='')
@@ -14,14 +19,14 @@ class Registration(models.Model):
     club = models.CharField(max_length=80, default='')
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
-    status = models.CharField(max_length=50, default='PENDING')
+    status = models.CharField(max_length=50, default=PENDING)
     # pending, registered, (started), finished
     updated = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
     def add(bib='', first_name='', surname='', gender='', age_category='', club='', email='', number=''):
         cust = Registration.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
-                                           club=club, email=email, number=number, status='pending')
+                                           club=club, email=email, number=number, status=Registration.PENDING)
 
         cust.save()
 
@@ -30,12 +35,19 @@ class Registration(models.Model):
         return Registration.objects.all()
 
     @staticmethod
-    def get_all_registrations_as_dict(exclude=['status', 'updated', 'id']):
+    def get_all_registrations_as_dict(exclude=['updated', 'id']):
         # Return a list of dictionarys representing each object
         return [Registration._serial_model(reg, exclude) for reg in Registration.get_all_registrations_as_obj()]
 
-    def update_registration(self):
-        pass
+    @staticmethod
+    def _update_registration(bib, status):
+        regobj = Registration.get_registration_as_obj(bib=bib)
+        regobj.status = status
+        regobj.save()
+
+    @staticmethod
+    def register(bib):
+        Registration._update_registration(bib=bib, status=Registration.REGISTERED)
 
     @staticmethod
     def get_registration_as_obj(bib):
@@ -50,7 +62,6 @@ class Registration(models.Model):
     def _serial_model(model_obj, exclude=[]):
         opts = model_obj._meta.fields
         modeldict = model_to_dict(model_obj, exclude=exclude)
-        print modeldict
         for m in opts:
             if m.is_relation:
                 foreignkey = getattr(model_obj, m.name)
