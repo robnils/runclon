@@ -1,9 +1,5 @@
 from __future__ import unicode_literals
-
-import datetime
-
 from django.db import models
-
 
 # Create your models here.
 from django.forms import model_to_dict
@@ -52,3 +48,12 @@ class Registration(models.Model):
                     except:
                         pass
         return modeldict
+
+    @staticmethod
+    def truncate():
+        return Registration.get_registrations_as_obj().delete()
+
+    @staticmethod
+    def delete_registration(bib=bib):
+        return Registration.objects.filter(bib=bib).delete()
+
