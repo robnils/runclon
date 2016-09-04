@@ -26,16 +26,28 @@ class Registration(models.Model):
         cust.save()
 
     @staticmethod
-    def get_registrations_as_obj():
+    def get_all_registrations_as_obj():
         return Registration.objects.all()
 
     @staticmethod
-    def get_registrations_as_dict(exclude=['status', 'updated', 'id']):
+    def get_all_registrations_as_dict(exclude=['status', 'updated', 'id']):
         # Return a list of dictionarys representing each object
-        return [Registration.serial_model(reg, exclude) for reg in Registration.get_registrations_as_obj()]
+        return [Registration._serial_model(reg, exclude) for reg in Registration.get_all_registrations_as_obj()]
+
+    def update_registration(self):
+        pass
 
     @staticmethod
-    def serial_model(model_obj, exclude=[]):
+    def get_registration_as_obj(bib):
+        return Registration.objects.get(bib=bib)
+
+    @staticmethod
+    def get_registration_as_dict(bib):
+        regobj = Registration.get_registration_as_obj(bib)
+        return Registration._serial_model(regobj, exclude=['id'])
+
+    @staticmethod
+    def _serial_model(model_obj, exclude=[]):
         opts = model_obj._meta.fields
         modeldict = model_to_dict(model_obj, exclude=exclude)
         print modeldict
@@ -44,16 +56,16 @@ class Registration(models.Model):
                 foreignkey = getattr(model_obj, m.name)
                 if foreignkey:
                     try:
-                        modeldict[m.name] = Registration.serial_model(foreignkey)
+                        modeldict[m.name] = Registration._serial_model(foreignkey)
                     except:
                         pass
         return modeldict
 
     @staticmethod
     def truncate():
-        return Registration.get_registrations_as_obj().delete()
+        return Registration.get_all_registrations_as_obj().delete()
 
     @staticmethod
-    def delete_registration(bib=bib):
-        return Registration.objects.filter(bib=bib).delete()
+    def delete_registration(bib):
+        return Registration.get_registration_as_obj(bib).delete()
 
