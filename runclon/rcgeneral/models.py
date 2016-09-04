@@ -4,6 +4,7 @@ from django.db import models
 # Create your models here.
 from django.forms import model_to_dict
 
+
 class Registration(models.Model):
 
     # Statuses
