@@ -10,7 +10,7 @@ from django.forms import model_to_dict
 
 
 class Registration(models.Model):
-    bib = models.CharField(max_length=10, default='')
+    bib = models.CharField(max_length=10, unique=True)
     first_name = models.CharField(max_length=60, default='')
     surname = models.CharField(max_length=60, default='')
     gender = models.CharField(max_length=10, default='')
@@ -34,18 +34,18 @@ class Registration(models.Model):
         return Registration.objects.all()
 
     @staticmethod
-    def get_registrations_as_dict():
+    def get_registrations_as_dict(exclude=['status', 'updated', 'id']):
         # Return a list of dictionarys representing each object
-        return [Registration.serial_model(reg) for reg in Registration.get_registrations_as_obj()]
+        return [Registration.serial_model(reg, exclude) for reg in Registration.get_registrations_as_obj()]
 
     @staticmethod
-    def serial_model(reg):
-        opts = reg._meta.fields
-        modeldict = model_to_dict(reg, exclude = ['status', 'updated', 'id'])
+    def serial_model(model_obj, exclude=[]):
+        opts = model_obj._meta.fields
+        modeldict = model_to_dict(model_obj, exclude=exclude)
         print modeldict
         for m in opts:
             if m.is_relation:
-                foreignkey = getattr(reg, m.name)
+                foreignkey = getattr(model_obj, m.name)
                 if foreignkey:
                     try:
                         modeldict[m.name] = Registration.serial_model(foreignkey)
