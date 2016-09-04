@@ -16,7 +16,7 @@ def update_status(request):
     return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
 
 
-def register(request):
+def add(request):
     if request.method == 'POST':
         bib = request.POST.get('bib')
         first_name = request.POST.get('first_name')
