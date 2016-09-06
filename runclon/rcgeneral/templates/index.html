@@ -3,9 +3,12 @@
 
 {% block header %}
     <script src='{% static "js/index.js" %}'></script>
+    <!--
     <script src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
     <link rel="stylesheet" type="text/css" href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'>
-
+    -->
+    <script src='{% static "js/datatables.js"%}'></script>
+    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css"%}'>
 {% endblock %}
 
 {% block content %}
@@ -21,6 +24,8 @@
                 <input id="email" style="text-align:center;" placeholder="email...">
                 <input id="number" style="text-align:center;" placeholder="number...">
             </div>
+        </div>
+        <div class="row" style="width: 100%; margin: 15px 15px">
             <div align="center">
                 <button id="add" class="col-sm-6 btn-success" style="width: 100px; height: 30px;">Add!</button>
                 <button id="view_registrations" class="col-sm-6" style="width: 100px; height: 30px;">View</button>
@@ -29,9 +34,12 @@
             </div>
         </div>
         <div class="row" style="width: 100%; margin: 15px 15px">
+             <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
+        </div>
+        <div class="row" style="width: 100%; margin: 15px 15px">
             <div id="results"></div>
         </div>
-        <div id="myTable"></div>
+        <div id="myTable">
             <table id="table_id" class="display">
                 <thead>
                     <tr>
@@ -50,16 +58,18 @@
                     </tr>
                 </tbody>
             </table>
-        <div id="example"></div>
+        </div>
     </div>
 
     <script>
+
         $(document).ready(function () {
             bind_add_button();
             bind_view_button();
             bind_clear_all_button();
             bind_register_button();
-
+            bind_search_box($("#search"));
+            /*
             var table = $('#table_id').DataTable();
             table.search( 'Fiona' ).draw();
 

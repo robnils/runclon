@@ -132,3 +132,25 @@ function bind_register_button() {
         register(data);
     });
 }
+
+function bind_search_box(element) {
+    $(element).keydown(function() {
+        var text = $(element).val();
+        if(text.length > 3) {
+            console.log("searching " + text + "...");
+            $.ajax({
+                method: "POST",
+                url: "/rcgeneral/search",
+                data: data
+            })
+            .done(function (msg) {
+                if (msg['success'] == true) {
+                    //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+                } else {
+                    //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+                }
+                //$(element).parent().parent().find(".glyphicon-refresh").hide();
+            });
+        }
+    });
+}

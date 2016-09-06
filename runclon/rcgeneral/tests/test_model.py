@@ -1,7 +1,6 @@
 from django.test import TestCase
 from rcgeneral.models import Registration
 
-
 class TestRegistration(TestCase):
 
     def test_get_all_registrations(self):
@@ -22,7 +21,7 @@ class TestRegistration(TestCase):
             "club": "Her Majesty's Secret Service",
             "email": "james.bond@mi6.co.uk",
             'number': "+007",
-            'status': "pending",
+            'status': Registration.PENDING,
         })
 
         self.assertEquals(regdict[1], {
@@ -34,7 +33,7 @@ class TestRegistration(TestCase):
             "club": "Treadstone",
             "email": "jason.bourne@cia.gov",
             'number': "+001",
-            'status': "pending",
+            'status': Registration.PENDING,
         })
 
     def test_truncate(self):
@@ -90,7 +89,7 @@ class TestRegistration(TestCase):
             "club": "Her Majesty's Secret Service",
             "email": "james.bond@mi6.co.uk",
             'number': "+007",
-            'status': "pending",
+            'status': Registration.PENDING,
         })
 
     def test_register(self):
@@ -107,4 +106,29 @@ class TestRegistration(TestCase):
         regobj = Registration.get_registration_as_obj(bib="007")
         self.assertEquals(regobj.status, Registration.REGISTERED)
 
+    def test_search(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
 
+        Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+
+        Registration.add(bib="999", first_name="James", surname="Band", gender="Male", age_category="M40",
+                         club="Welsh Police",
+                         email="james.band@wales.waleland", number="+999")
+
+        results = Registration.search("James")
+        self.assertEquals(len(results), 2)
+        # TODO assert actual results
+
+        results = Registration.search("James Bond")
+        self.assertEquals(len(results), 1)
+        # TODO assert actual results
+
+        results = Registration.search("Bond")
+        self.assertEquals(len(results), 1)
+        # TODO assert actual results
+
+        # TODO fix failing test: Full name should return one hit

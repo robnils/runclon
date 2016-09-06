@@ -24,6 +24,9 @@ class Registration(models.Model):
     # pending, registered, (started), finished
     updated = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return "{},{},{}".format(self.bib, self.first_name, self.surname)
+
     @staticmethod
     def add(bib='', first_name='', surname='', gender='', age_category='', club='', email='', number=''):
         cust = Registration.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
@@ -80,4 +83,24 @@ class Registration(models.Model):
     @staticmethod
     def delete_registration(bib):
         return Registration.get_registration_as_obj(bib).delete()
+
+    @staticmethod
+    def search(text):
+        search_lst = text.split(' ')
+        results = []
+
+        # Try obvious combinations first
+
+        for elem in search_lst:
+            first_name = Registration.get_all_registrations_as_obj().filter(first_name=elem)
+            surname = Registration.get_all_registrations_as_obj().filter(surname=elem)
+
+            for regobj in first_name:
+                if regobj not in results:
+                    results.append(regobj)
+            for regobj in surname:
+                if regobj not in results:
+                    results.append(regobj)
+
+        return [Registration._serial_model(regobj) for regobj in results]
 
