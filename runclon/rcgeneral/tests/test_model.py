@@ -108,7 +108,7 @@ class TestRegistration(TestCase):
         regobj = Registration.get_registration_as_obj(bib="007")
         self.assertEquals(regobj.status, Registration.REGISTERED)
 
-    def test_search(self):
+    def test_correct_number_of_search_results(self):
         Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
                          club="Her Majesty's Secret Service",
                          email="james.bond@mi6.co.uk", number="+007")
@@ -121,16 +121,93 @@ class TestRegistration(TestCase):
                          club="Welsh Police",
                          email="james.band@wales.waleland", number="+999")
 
+        registered, not_registered = Registration.search_by_last_name("Bo")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 3)
 
-        results = Registration.search_by_last_name("Bo")
-        self.assertEquals(len(results), 3)
-        # TODO assert actual results
+        registered, not_registered = Registration.search_by_last_name("Bon")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 2)
 
-        results = Registration.search_by_last_name("Bon")
-        self.assertEquals(len(results), 2)
-        # TODO assert actual results
+        registered, not_registered = Registration.search_by_last_name("Bont")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 1)
 
-        results = Registration.search_by_last_name("Bont")
-        self.assertEquals(len(results), 1)
-        # TODO assert actual results
-        # TODO fix failing test: Full name should return one hit
+    def test_search_results_are_correct(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+
+        Registration.add(bib="999", first_name="James", surname="Bont", gender="Male", age_category="M40",
+                         club="Welsh Police",
+                         email="james.band@wales.waleland", number="+999")
+
+        Registration.add(bib="002", first_name="Robert", surname="Hilliard", gender="Male", age_category="MS",
+                         club="World Police",
+                         email="robert.hilliard@everything.com", number="+001")
+
+        # Register Bont
+        Registration.register("007")
+
+        registered, not_registered = Registration.search_by_last_name("Bo")
+        self.assertEquals(len(registered), 1)
+        self.assertEquals(len(not_registered), 2)
+
+        self.assertEquals(registered[0], {
+            'bib': "007",
+            'first_name': 'James',
+            'surname': 'Bond',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Her Majesty's Secret Service",
+            "email": "james.bond@mi6.co.uk",
+            'number': "+007",
+            'status': Registration.REGISTERED,
+            'id': 1,
+        })
+
+        self.assertEquals(not_registered[0], {
+            'bib': "999",
+            'first_name': 'James',
+            'surname': 'Bont',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Welsh Police",
+            "email": "james.band@wales.waleland",
+            'number': "+999",
+            'status': Registration.PENDING,
+            'id': 3,
+        })
+
+        self.assertEquals(not_registered[1], {
+            'bib': "001",
+            'first_name': 'Jason',
+            'surname': 'Bourne',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Treadstone",
+            "email": "jason.bourne@cia.gov",
+            'number': "+001",
+            'status': Registration.PENDING,
+            'id': 2,
+        })
+
+
+
+        '''
+        self.assertEquals(results_dict[0], {
+            'bib': "001",
+            'first_name': 'Robert',
+            'surname': 'Hilliard',
+            'gender': 'Male',
+            'age_category': 'MS',
+            "club": "World Police",
+            "email": "robert.hilliard@everything.com",
+            'number': "+001",
+            'status': Registration.PENDING,
+        })
+        '''

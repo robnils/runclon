@@ -13,6 +13,7 @@ function bind_search_box(element) {
             })
             .done(function (msg) {
                 if (msg['success'] == true) {
+                    console.log(msg['results']);
                     //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
                 } else {
                     //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});

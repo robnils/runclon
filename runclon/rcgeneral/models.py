@@ -86,9 +86,11 @@ class Registration(models.Model):
 
     @staticmethod
     def search_by_last_name(text):
-
         results = Registration.get_all_registrations_as_obj().filter(surname__contains=text)
-        #return [Registration._serial_model(regobj) for regobj in results]
-        # TODO separate into registered and not registered
-        return results
+        not_registered = results.filter(status=Registration.PENDING).order_by('surname')
+        registered = results.filter(status=Registration.REGISTERED).order_by('surname')
+        return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
 
+    @staticmethod
+    def _obj_to_dict(list_of_obj):
+        return [Registration._serial_model(obj) for obj in list_of_obj]
