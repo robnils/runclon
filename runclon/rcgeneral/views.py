@@ -91,9 +91,9 @@ def search(request):
     if request.method == 'POST':
         text = request.POST.get('text')
         try:
-            results = Registration.search_by_last_name(text)
+            registered, not_registered = Registration.search_by_last_name(text)
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
-        return JsonResponse({'success': True, 'results': results})
+        return JsonResponse({'success': True, 'registered': registered, 'not_registered': not_registered})
     return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
