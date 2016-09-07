@@ -211,3 +211,28 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
         })
         '''
+    def test_search_case_insensitive(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+
+        registered, not_registered = Registration.search_by_last_name("bON")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 1)
+        self.assertEquals(not_registered[0], {
+            'bib': "007",
+            'first_name': 'James',
+            'surname': 'Bond',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Her Majesty's Secret Service",
+            "email": "james.bond@mi6.co.uk",
+            'number': "+007",
+            'status': Registration.PENDING,
+            'id': 1,
+        })
+
