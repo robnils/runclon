@@ -18,7 +18,9 @@ function bind_search_box(search_element, table_element) {
                     if (msg['success'] == true) {
                         console.log(msg['registered']);
                         console.log(msg['not_registered']);
-                        generate_table(table_element);
+                        var registered = msg['registered'];
+                        var not_registered = msg['not_registered'];
+                        generate_table(table_element, not_registered, registered);
                         //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
                     } else {
                         //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
@@ -29,10 +31,17 @@ function bind_search_box(search_element, table_element) {
     });
 }
 
-function generate_table(table_element) {
+function generate_table(table_element, not_registered, registered) {
     //var table_id = table_element.attr('id');
     //$("#" + table_id + " tbody tr").remove(); // Clear table
-    tableCreate();
+    //tableCreate();
+    for(var idx in not_registered) {
+        console.log(not_registered[idx]);
+        table_element.after('<tr>asd</tr>');
+        //$('#myTable tr:last').after('<tr>asd</tr>');
+
+        //table_element.innerHTML("")
+    }
 
 }
 

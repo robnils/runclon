@@ -16,6 +16,9 @@
         <div class="row" style="width: 100%; margin: 15px 15px">
             <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
         </div>
+        <table id="table_results">
+            <tbody></tbody>
+        </table>
         <!--
         <div id="myTable">
             <table id="table_id" class="display">
@@ -43,7 +46,7 @@
     <script>
 
         $(document).ready(function () {
-            bind_search_box($("#search"));
+            bind_search_box($("#search"), $("#table_results"));
             /*
              var table = $('#table_id').DataTable();
              table.search( 'Fiona' ).draw();
