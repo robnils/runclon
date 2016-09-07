@@ -7,8 +7,8 @@
     <script src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
     <link rel="stylesheet" type="text/css" href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'>
     -->
-    <script src='{% static "js/datatables.js"%}'></script>
-    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css"%}'>
+    <script src='{% static "js/datatables.js" %}'></script>
+    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css" %}'>
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="row" style="width: 100%; margin: 15px 15px">
-             <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
+            <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
         </div>
     </div>
 
@@ -46,15 +46,15 @@
             bind_clear_all_button();
             bind_register_button();
             /*
-            var table = $('#table_id').DataTable();
-            table.search( 'Fiona' ).draw();
+             var table = $('#table_id').DataTable();
+             table.search( 'Fiona' ).draw();
 
-            /*
-            $("#table_id").dataTable({
+             /*
+             $("#table_id").dataTable({
              bJQueryUI: true,
              sPaginationType: "full_numbers"
-            });
-            */
+             });
+             */
         });
     </script>
 

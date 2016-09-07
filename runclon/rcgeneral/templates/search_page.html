@@ -2,37 +2,37 @@
 {% load staticfiles %}
 
 {% block header %}
-    <script src='{% static "js/index.js" %}'></script>
+    <script src='{% static "js/search_page.js" %}'></script>
     <!--
     <script src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
     <link rel="stylesheet" type="text/css" href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'>
     -->
-    <script src='{% static "js/datatables.js"%}'></script>
-    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css"%}'>
+    <script src='{% static "js/datatables.js" %}'></script>
+    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css" %}'>
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row" style="width: 100%; margin: 15px 15px">
-             <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
+            <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
         </div>
         <div id="myTable">
             <table id="table_id" class="display">
                 <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                    </tr>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                    </tr>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -43,15 +43,15 @@
         $(document).ready(function () {
             bind_search_box($("#search"));
             /*
-            var table = $('#table_id').DataTable();
-            table.search( 'Fiona' ).draw();
+             var table = $('#table_id').DataTable();
+             table.search( 'Fiona' ).draw();
 
-            /*
-            $("#table_id").dataTable({
+             /*
+             $("#table_id").dataTable({
              bJQueryUI: true,
              sPaginationType: "full_numbers"
-            });
-            */
+             });
+             */
         });
     </script>
 
