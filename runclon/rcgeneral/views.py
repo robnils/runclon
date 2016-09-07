@@ -5,8 +5,12 @@ from django.shortcuts import render
 from rcgeneral.models import Registration
 
 
-def index(request):
+def index_page(request):
     return render(request, 'index.html', {})
+
+
+def search_page(request):
+    return render(request, 'search_page.html', {})
 
 
 def update_status(request):

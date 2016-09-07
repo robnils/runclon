@@ -85,22 +85,10 @@ class Registration(models.Model):
         return Registration.get_registration_as_obj(bib).delete()
 
     @staticmethod
-    def search(text):
-        search_lst = text.split(' ')
-        results = []
+    def search_by_last_name(text):
 
-        # Try obvious combinations first
-
-        for elem in search_lst:
-            first_name = Registration.get_all_registrations_as_obj().filter(first_name=elem)
-            surname = Registration.get_all_registrations_as_obj().filter(surname=elem)
-
-            for regobj in first_name:
-                if regobj not in results:
-                    results.append(regobj)
-            for regobj in surname:
-                if regobj not in results:
-                    results.append(regobj)
-
-        return [Registration._serial_model(regobj) for regobj in results]
+        results = Registration.get_all_registrations_as_obj().filter(surname__contains=text)
+        #return [Registration._serial_model(regobj) for regobj in results]
+        # TODO separate into registered and not registered
+        return results
 

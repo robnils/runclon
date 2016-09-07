@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-        <div>
+    <div class="container">
         <div class="row" style="width: 100%; margin: 15px 15px">
             <div class="col-sm-3" style="width: 100%; margin: 3px 3px">
                 <input id="first_name" style="text-align:center;" placeholder="first name...">
@@ -36,29 +36,6 @@
         <div class="row" style="width: 100%; margin: 15px 15px">
              <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
         </div>
-        <div class="row" style="width: 100%; margin: 15px 15px">
-            <div id="results"></div>
-        </div>
-        <div id="myTable">
-            <table id="table_id" class="display">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 
     <script>
@@ -68,7 +45,6 @@
             bind_view_button();
             bind_clear_all_button();
             bind_register_button();
-            bind_search_box($("#search"));
             /*
             var table = $('#table_id').DataTable();
             table.search( 'Fiona' ).draw();

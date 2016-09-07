@@ -1,5 +1,7 @@
 from django.test import TestCase
+#from rcgeneral.models import Registration
 from rcgeneral.models import Registration
+
 
 class TestRegistration(TestCase):
 
@@ -115,20 +117,20 @@ class TestRegistration(TestCase):
                          club="Treadstone",
                          email="jason.bourne@cia.gov", number="+001")
 
-        Registration.add(bib="999", first_name="James", surname="Band", gender="Male", age_category="M40",
+        Registration.add(bib="999", first_name="James", surname="Bont", gender="Male", age_category="M40",
                          club="Welsh Police",
                          email="james.band@wales.waleland", number="+999")
 
-        results = Registration.search("James")
+
+        results = Registration.search_by_last_name("Bo")
+        self.assertEquals(len(results), 3)
+        # TODO assert actual results
+
+        results = Registration.search_by_last_name("Bon")
         self.assertEquals(len(results), 2)
         # TODO assert actual results
 
-        results = Registration.search("James Bond")
+        results = Registration.search_by_last_name("Bont")
         self.assertEquals(len(results), 1)
         # TODO assert actual results
-
-        results = Registration.search("Bond")
-        self.assertEquals(len(results), 1)
-        # TODO assert actual results
-
         # TODO fix failing test: Full name should return one hit
