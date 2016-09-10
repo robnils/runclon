@@ -13,17 +13,31 @@
 
 {% block content %}
     <div class="container">
-        <div class="row" style="width: 100%; margin: 15px 15px">
-            <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
+        <div class="row" style="width: 100%; margin: 0px 0px 0px 50px;">
+            <input id="search" style="width: 80%; text-align:center;" placeholder="enter name...">
         </div>
         <div class="row" style="width: 100%; margin: 15px 15px">
-            <table id="table_results_not_registered">
+            <table class="table" id="table_results_not_registered" width="100%">
+                <thead>
+                    <tr>
+                         <th>id</th>
+                         <th>Bib</th>
+                         <th>First Name</th>
+                         <th>Surname</th>
+                         <th>Gender</th>
+                         <th>Age Category</th>
+                         <th>Club</th>
+                         <th>Email</th>
+                         <th>Number</th>
+                         <th>Status</th>
+                    </tr>
+                </thead>
                 <tbody></tbody>
             </table>
         </div>
 
         <div class="row" style="width: 100%; margin: 15px 15px">
-            <table id="table_results_registered">
+            <table class="table" id="table_results_registered">
                 <tbody></tbody>
             </table>
         </div>
