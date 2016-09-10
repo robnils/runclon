@@ -51,6 +51,9 @@ class Registration(models.Model):
 
     @staticmethod
     def register(bib):
+        # TODO add proper validation
+        if not bib:
+            raise Exception("Bib number cannot be None!")
         Registration._update_registration(bib=bib, status=Registration.REGISTERED)
 
     @staticmethod

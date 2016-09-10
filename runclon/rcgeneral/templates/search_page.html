@@ -12,13 +12,46 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+    caption {
+        text-align:center;
+
+        font: italic bold 20px Georgia, serif;
+    }
+    </style>
+
     <div class="container">
         <div class="row" style="width: 100%; margin: 0px 0px 0px 50px;">
             <input id="search" style="width: 80%; text-align:center;" placeholder="enter name...">
         </div>
+
         <div class="row" style="width: 100%; margin: 15px 15px">
             <table class="table" id="table_results_not_registered" width="100%">
+                <caption>AWAITING REGISTRATION...</caption>
                 <thead>
+                    <tr>
+                         <th>id</th>
+                         <th>Bib</th>
+                         <th>First Name</th>
+                         <th>Surname</th>
+                         <th>Gender</th>
+                         <th>Age Category</th>
+                         <th>Club</th>
+                         <th>Email</th>
+                         <th>Number</th>
+                         <th>Status</th>
+                         <th>Registration</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+        <div class="row" style="width: 100%; margin: 15px 15px">
+            <table class="table" id="table_results_registered"  width="100%">
+                <caption>REGISTERED</caption>
+                 <thead>
                     <tr>
                          <th>id</th>
                          <th>Bib</th>
@@ -36,28 +69,12 @@
             </table>
         </div>
 
-        <div class="row" style="width: 100%; margin: 15px 15px">
-            <table class="table" id="table_results_registered">
-                <tbody></tbody>
-            </table>
-        </div>
-
     </div>
 
     <script>
 
         $(document).ready(function () {
             bind_search_box($("#search"), $("#table_results_not_registered"), $("#table_results_registered"));
-            /*
-             var table = $('#table_id').DataTable();
-             table.search( 'Fiona' ).draw();
-
-             /*
-             $("#table_id").dataTable({
-             bJQueryUI: true,
-             sPaginationType: "full_numbers"
-             });
-             */
         });
     </script>
 

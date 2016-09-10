@@ -20,12 +20,12 @@ function bind_search_box(search_element, table_element_not_registered, table_ele
                         var registered = msg['registered'];
                         var not_registered = msg['not_registered'];
                         if(not_registered.length > 0) {
-                            generate_table(table_element_not_registered, not_registered);
+                            generate_table(table_element_not_registered, not_registered, false);
                         } else {
                             clear_table(table_id_registered);
                         }
                         if(registered.length > 0) {
-                            //generate_table(table_element_registered, registered);
+                            generate_table(table_element_registered, registered, true);
                         } else {
                             clear_table(table_id_not_registered);
                         }
@@ -49,15 +49,15 @@ function clear_table(table_id) {
     //var table_id = table_element.attr('id');
     $("#" + table_id + " tbody tr").remove(); // Clear table
 }
-function generate_table(table_element, data) {
+function generate_table(table_element, data, registered) {
     var table_id = table_element.attr('id');
     //clear_table(table_id);
     console.log("#" + table_id + " tbody tr");
     $("#" + table_id + " tbody tr").remove(); // Clear table
-    tableCreate(table_id, data);
+    tableCreate(table_id, data, registered);
 }
 
-function tableCreate(table_id, data){
+function tableCreate(table_id, data, registered){
     var body = document.body;
     //var  tbl  = document.createElement('table');
     var tbl = document.getElementById(table_id);
@@ -90,9 +90,44 @@ function tableCreate(table_id, data){
         for(var col_idx = 0; col_idx < Object.keys(dict).length; col_idx++){
             var td = tr.insertCell();
             td.appendChild(document.createTextNode(dict[map_idx_to_key[col_idx]]));
-            td.style.border = '1px solid black';
+            //td.style.border = '1px solid black';
             //td.style.width = '600px';
         }
+        if(!registered) {
+            // Register button
+            var td = tr.insertCell();
+            var btn_id = 'register_button_' + dict['bib'];
+            td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
+            bind_register_button(btn_id);
+        }
+
     }
     body.appendChild(tbl);
+}
+
+function bind_register_button(btn_id) {
+    $("#" + btn_id).click(function () {
+        var bib = btn_id.split("register_button_")[1];
+        register(bib);
+    });
+}
+
+function register(bib) {
+    var data = {
+            'bib': bib,
+            'csrfmiddlewaretoken': get_csrf_token()
+    };
+    $.ajax({
+            method: "POST",
+            url: "/rcgeneral/register",
+            data: data
+        })
+        .done(function (msg) {
+            if (msg['success'] == true) {
+                swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+            } else {
+                swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+            }
+            //$(element).parent().parent().find(".glyphicon-refresh").hide();
+        });
 }
