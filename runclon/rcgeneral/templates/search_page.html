@@ -16,37 +16,24 @@
         <div class="row" style="width: 100%; margin: 15px 15px">
             <input id="search" style="width: 50%; text-align:center;" placeholder="enter name...">
         </div>
-        <table id="table_results">
-            <tbody></tbody>
-        </table>
-        <!--
-        <div id="myTable">
-            <table id="table_id" class="display">
-                <thead>
-                <tr>
-                    <th>Column 1</th>
-                    <th>Column 2</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                </tr>
-                <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
-                </tr>
-                </tbody>
+        <div class="row" style="width: 100%; margin: 15px 15px">
+            <table id="table_results_not_registered">
+                <tbody></tbody>
             </table>
         </div>
-        -->
+
+        <div class="row" style="width: 100%; margin: 15px 15px">
+            <table id="table_results_registered">
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 
     <script>
 
         $(document).ready(function () {
-            bind_search_box($("#search"), $("#table_results"));
+            bind_search_box($("#search"), $("#table_results_not_registered"), $("#table_results_registered"));
             /*
              var table = $('#table_id').DataTable();
              table.search( 'Fiona' ).draw();
