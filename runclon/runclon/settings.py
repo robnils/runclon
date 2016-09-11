@@ -124,3 +124,6 @@ PROJECT_DIR = "."
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Data file
+#PATH_TO_DATA = os.path.join(PROJECT_DIR, 'reg.csv')
