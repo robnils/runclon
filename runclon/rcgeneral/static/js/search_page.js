@@ -22,12 +22,12 @@ function bind_search_box(search_element, table_element_not_registered, table_ele
                         if(not_registered.length > 0) {
                             generate_table(table_element_not_registered, not_registered, false);
                         } else {
-                            clear_table(table_id_registered);
+                            clear_table(table_id_not_registered);
                         }
                         if(registered.length > 0) {
                             generate_table(table_element_registered, registered, true);
                         } else {
-                            clear_table(table_id_not_registered);
+                            clear_table(table_id_registered);
                         }
                         //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
                     } else {
