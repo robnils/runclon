@@ -1,47 +1,63 @@
 /**
  * Created by rob on 2016-09-07.
  */
-function bind_search_box(search_element, table_element_not_registered, table_element_registered) {
-    $(search_element).keyup(function () {
-        var text = $(search_element).val();
+function bind_search_box(search_element_lname, search_element_fname, table_element_not_registered, table_element_registered) {
+
+    $(search_element_lname).keyup(function () {
+        // Search by last name
+        var text = $(search_element_lname).val();
         console.log(text);
-        if (text.length > 0) {
-            console.log("Searching " + text + "...");
-            $.ajax({
-                method: "POST",
-                url: "/rcgeneral/search",
-                data: {
-                    'text': text,
-                    'csrfmiddlewaretoken': get_csrf_token()
-                }
-            })
-            .done(function (msg) {
-                if (msg['success'] == true) {
-                    var registered = msg['registered'];
-                    var not_registered = msg['not_registered'];
-
-                    console.log(registered);
-                    console.log(not_registered);
-
-                    generate_table(table_element_not_registered, not_registered, false);
-                    generate_table(table_element_registered, registered, true);
-                    //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
-                } else {
-                    console.log("failed, clearing...");
-                    clear_table(table_id_not_registered);
-                    clear_table(table_id_registered);
-                    //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
-                }
-                //$(element).parent().parent().find(".glyphicon-refresh").hide();
-            });
-        } else {
-            // Clear tables
-            var table_id_not_registered = table_element_not_registered.attr('id');
-            var table_id_registered = table_element_registered.attr('id');
-            clear_table(table_id_not_registered);
-            clear_table(table_id_registered);
-        }
+        $(search_element_fname).val('');
+        perform_search("search_by_last_name", text, table_element_not_registered, table_element_registered);
     });
+    $(search_element_fname).keyup(function () {
+        // Search by first name
+        var text = $(search_element_fname).val();
+        console.log(text);
+        $(search_element_lname).val('');
+        perform_search("search_by_first_name", text, table_element_not_registered, table_element_registered);
+    });
+
+}
+
+function perform_search(search_type, text, table_element_not_registered, table_element_registered) {
+    console.log(text);
+    if (text.length > 0) {
+        console.log("Searching by " + search_type + " with " + text + "...");
+        $.ajax({
+            method: "POST",
+            url: "/rcgeneral/" + search_type,
+            data: {
+                'text': text,
+                'csrfmiddlewaretoken': get_csrf_token()
+            }
+        })
+        .done(function (msg) {
+            if (msg['success'] == true) {
+                var registered = msg['registered'];
+                var not_registered = msg['not_registered'];
+
+                console.log(registered);
+                console.log(not_registered);
+
+                generate_table(table_element_not_registered, not_registered, false);
+                generate_table(table_element_registered, registered, true);
+                //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+            } else {
+                console.log("failed, clearing...");
+                clear_table(table_id_not_registered);
+                clear_table(table_id_registered);
+                //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+            }
+            //$(element).parent().parent().find(".glyphicon-refresh").hide();
+        });
+    } else {
+        // Clear tables
+        var table_id_not_registered = table_element_not_registered.attr('id');
+        var table_id_registered = table_element_registered.attr('id');
+        clear_table(table_id_not_registered);
+        clear_table(table_id_registered);
+    }
 }
 
 function clear_table(table_id) {

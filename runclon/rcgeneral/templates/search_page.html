@@ -22,7 +22,15 @@
 
     <div class="container">
         <div class="row" style="width: 100%; margin: 0px 0px 0px 50px;">
-            <input id="search" style="width: 80%; text-align:center;" placeholder="enter last name...">
+            <div class="col-xs-5">
+                <input id="search_fname" style="width: 100%; text-align:center;" placeholder="enter first name...">
+            </div>
+            <div class="col-xs-2 text-center">
+               or
+            </div>
+            <div class="col-xs-5">
+                <input id="search_last_name" style="width: 100%; text-align:center;" placeholder="enter last name...">
+            </div>
         </div>
 
         <div class="row" style="width: 100%; margin: 15px 15px">
@@ -73,7 +81,8 @@
 
     <script>
         $(document).ready(function () {
-            bind_search_box($("#search"), $("#table_results_not_registered"), $("#table_results_registered"));
+            bind_search_box($("#search_last_name"), $("#search_fname"), $("#table_results_not_registered"), $("#table_results_registered"));
+            //bind_search_box($("#search_fname"), $("#table_results_not_registered"), $("#table_results_registered"));
         });
     </script>
 

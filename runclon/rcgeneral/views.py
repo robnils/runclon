@@ -87,11 +87,23 @@ def get_registrations(request):
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
 
 
-def search(request):
+def search_last_name(request):
     if request.method == 'POST':
         text = request.POST.get('text')
         try:
             registered, not_registered = Registration.search_by_last_name(text)
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+        return JsonResponse({'success': True, 'registered': registered, 'not_registered': not_registered})
+    return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
+
+
+def search_by_first_name(request):
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        try:
+            registered, not_registered = Registration.search_by_first_name(text)
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})

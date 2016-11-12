@@ -95,5 +95,12 @@ class Registration(models.Model):
         return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
 
     @staticmethod
+    def search_by_first_name(text):
+        results = Registration.get_all_registrations_as_obj().filter(first_name__contains=text)
+        not_registered = results.filter(status=Registration.PENDING).order_by('first_name')
+        registered = results.filter(status=Registration.REGISTERED).order_by('first_name')
+        return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
+
+    @staticmethod
     def _obj_to_dict(list_of_obj):
         return [Registration._serial_model(obj) for obj in list_of_obj]
