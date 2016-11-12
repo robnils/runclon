@@ -15,26 +15,25 @@ function bind_search_box(search_element, table_element_not_registered, table_ele
                     'csrfmiddlewaretoken': get_csrf_token()
                 }
             })
-                .done(function (msg) {
-                    if (msg['success'] == true) {
-                        var registered = msg['registered'];
-                        var not_registered = msg['not_registered'];
-                        if(not_registered.length > 0) {
-                            generate_table(table_element_not_registered, not_registered, false);
-                        } else {
-                            clear_table(table_id_not_registered);
-                        }
-                        if(registered.length > 0) {
-                            generate_table(table_element_registered, registered, true);
-                        } else {
-                            clear_table(table_id_registered);
-                        }
-                        //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
-                    } else {
-                        //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
-                    }
-                    //$(element).parent().parent().find(".glyphicon-refresh").hide();
-                });
+            .done(function (msg) {
+                if (msg['success'] == true) {
+                    var registered = msg['registered'];
+                    var not_registered = msg['not_registered'];
+
+                    console.log(registered);
+                    console.log(not_registered);
+
+                    generate_table(table_element_not_registered, not_registered, false);
+                    generate_table(table_element_registered, registered, true);
+                    //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+                } else {
+                    console.log("failed, clearing...");
+                    clear_table(table_id_not_registered);
+                    clear_table(table_id_registered);
+                    //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+                }
+                //$(element).parent().parent().find(".glyphicon-refresh").hide();
+            });
         } else {
             // Clear tables
             var table_id_not_registered = table_element_not_registered.attr('id');
@@ -53,11 +52,12 @@ function generate_table(table_element, data, registered) {
     var table_id = table_element.attr('id');
     //clear_table(table_id);
     console.log("#" + table_id + " tbody tr");
-    $("#" + table_id + " tbody tr").remove(); // Clear table
-    tableCreate(table_id, data, registered);
+    //$("#" + table_id + " tbody tr").remove(); // Clear table
+    clear_table(table_id);
+    create_table(table_id, data, registered);
 }
 
-function tableCreate(table_id, data, registered){
+function create_table(table_id, data, registered){
     var body = document.body;
     //var  tbl  = document.createElement('table');
     var tbl = document.getElementById(table_id);
@@ -88,14 +88,14 @@ function tableCreate(table_id, data, registered){
             index++;
         }*/
         for(var col_idx = 0; col_idx < Object.keys(dict).length; col_idx++){
-            var td = tr.insertCell();
+            var td = tr.insertCell(-1);
             td.appendChild(document.createTextNode(dict[map_idx_to_key[col_idx]]));
             //td.style.border = '1px solid black';
             //td.style.width = '600px';
         }
         if(!registered) {
             // Register button
-            var td = tr.insertCell();
+            var td = tr.insertCell(-1);
             var btn_id = 'register_button_' + dict['bib'];
             td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
             bind_register_button(btn_id);
@@ -121,13 +121,18 @@ function register(bib) {
             method: "POST",
             url: "/rcgeneral/register",
             data: data
-        })
-        .done(function (msg) {
-            if (msg['success'] == true) {
-                swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
-            } else {
-                swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
-            }
-            //$(element).parent().parent().find(".glyphicon-refresh").hide();
-        });
+    })
+    .done(function (msg) {
+        if (msg['success'] == true) {
+            location.reload();
+            swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
+
+        } else {
+            location.reload();
+            swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
+        }
+        //$(element).parent().parent().find(".glyphicon-refresh").hide();
+
+    });
+
 }
