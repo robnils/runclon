@@ -5,6 +5,18 @@ from rcgeneral.models import Registration
 
 class TestRegistration(TestCase):
 
+    # def setUp(self):
+    #     Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+    #                      club="Her Majesty's Secret Service",
+    #                      email="james.bond@mi6.co.uk", number="+007")
+    #
+    #     Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+    #                      club="Treadstone",
+    #                      email="jason.bourne@cia.gov", number="+001")
+    #
+    # def tearDown(self):
+    #     Registration.truncate()
+
     def test_get_all_registrations(self):
         Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40", club="Her Majesty's Secret Service",
                          email="james.bond@mi6.co.uk", number="+007")
@@ -121,15 +133,15 @@ class TestRegistration(TestCase):
                          club="Welsh Police",
                          email="james.band@wales.waleland", number="+999")
 
-        registered, not_registered = Registration.search_by_last_name("Bo")
+        registered, not_registered = Registration.search_by_surname("Bo")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 3)
 
-        registered, not_registered = Registration.search_by_last_name("Bon")
+        registered, not_registered = Registration.search_by_surname("Bon")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 2)
 
-        registered, not_registered = Registration.search_by_last_name("Bont")
+        registered, not_registered = Registration.search_by_surname("Bont")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 1)
 
@@ -153,7 +165,7 @@ class TestRegistration(TestCase):
         # Register Bont
         Registration.register("007")
 
-        registered, not_registered = Registration.search_by_last_name("Bo")
+        registered, not_registered = Registration.search_by_surname("Bo")
         self.assertEquals(len(registered), 1)
         self.assertEquals(len(not_registered), 2)
 
@@ -196,21 +208,6 @@ class TestRegistration(TestCase):
             'id': 2,
         })
 
-
-
-        '''
-        self.assertEquals(results_dict[0], {
-            'bib': "001",
-            'first_name': 'Robert',
-            'surname': 'Hilliard',
-            'gender': 'Male',
-            'age_category': 'MS',
-            "club": "World Police",
-            "email": "robert.hilliard@everything.com",
-            'number': "+001",
-            'status': Registration.PENDING,
-        })
-        '''
     def test_search_case_insensitive(self):
         Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
                          club="Her Majesty's Secret Service",
@@ -220,7 +217,7 @@ class TestRegistration(TestCase):
                          club="Treadstone",
                          email="jason.bourne@cia.gov", number="+001")
 
-        registered, not_registered = Registration.search_by_last_name("bON")
+        registered, not_registered = Registration.search_by_surname("bON")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 1)
         self.assertEquals(not_registered[0], {
@@ -236,3 +233,44 @@ class TestRegistration(TestCase):
             'id': 1,
         })
 
+    def test_fetch_statistics_works(self):
+        pass
+
+    def test_add_non_unique_entries(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        with self.assertRaises(ValueError) as err:
+            Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                             club="Her Majesty's Secret Service",
+                             email="james.bond@mi6.co.uk", number="+007")
+
+    def test_search_by_bib(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+        results = Registration.search_by_bib('007')
+        self.assertEquals(results[0], {
+            'bib': "007",
+            'first_name': 'James',
+            'surname': 'Bond',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Her Majesty's Secret Service",
+            "email": "james.bond@mi6.co.uk",
+            'number': "+007",
+            'status': Registration.PENDING,
+            'id': 1,
+        })
+
+    def test_is_unique_true(self):
+        result = Registration.is_unique('007')
+        self.assertTrue(result)
+
+    def test_is_unique_false(self):
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+        result = Registration.is_unique('007')
+        self.assertFalse(result)

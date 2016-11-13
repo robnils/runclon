@@ -20,7 +20,8 @@ class Registration(models.Model):
     club = models.CharField(max_length=80, default='')
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
-    #tshirt = models.CharField(max_length=5, default='') # TODO implement
+    #tshirt_size = models.CharField(max_length=5, default='') # TODO implement
+    #registered_time = models.CharField(max_length=5, default='') # TODO implement
     status = models.CharField(max_length=50, default=PENDING)
     updated = models.DateTimeField(auto_now_add=True)
 
@@ -29,6 +30,9 @@ class Registration(models.Model):
 
     @staticmethod
     def add(bib='', first_name='', surname='', gender='', age_category='', club='', email='', number=''):
+        if not Registration.is_unique(bib):
+            raise ValueError('Duplicate entry! {bib} {first_name} {surname}'.format(bib=bib,first_name=first_name, surname=surname))
+
         cust = Registration.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
                                            club=club, email=email, number=number, status=Registration.PENDING)
 
@@ -40,7 +44,7 @@ class Registration(models.Model):
 
     @staticmethod
     def get_all_registrations_as_dict(exclude=['updated', 'id']):
-        # Return a list of dictionarys representing each object
+        # Return a list of dictionaries representing each object
         return [Registration._serial_model(reg, exclude) for reg in Registration.get_all_registrations_as_obj()]
 
     @staticmethod
@@ -88,7 +92,16 @@ class Registration(models.Model):
         return Registration.get_registration_as_obj(bib).delete()
 
     @staticmethod
-    def search_by_last_name(text):
+    def is_unique(text):
+        return Registration.get_all_registrations_as_obj().filter(bib=text).count() == 0
+
+    @staticmethod
+    def search_by_bib(text):
+        results = Registration.get_all_registrations_as_obj().filter(bib=text)
+        return Registration._obj_to_dict(results)
+
+    @staticmethod
+    def search_by_surname(text):
         results = Registration.get_all_registrations_as_obj().filter(surname__contains=text)
         not_registered = results.filter(status=Registration.PENDING).order_by('surname')
         registered = results.filter(status=Registration.REGISTERED).order_by('surname')
@@ -100,6 +113,13 @@ class Registration(models.Model):
         not_registered = results.filter(status=Registration.PENDING).order_by('first_name')
         registered = results.filter(status=Registration.REGISTERED).order_by('first_name')
         return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
+
+    @staticmethod
+    def fetch_statistics():
+        pass
+        #registrations = Registration.get_all_registrations_as_obj()
+        #total_participants = registrations.count()
+        #number_registered =
 
     @staticmethod
     def _obj_to_dict(list_of_obj):
