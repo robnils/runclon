@@ -116,10 +116,17 @@ class Registration(models.Model):
 
     @staticmethod
     def fetch_statistics():
-        pass
-        #registrations = Registration.get_all_registrations_as_obj()
-        #total_participants = registrations.count()
-        #number_registered =
+        registrations = Registration.get_all_registrations_as_obj()
+        total_participants = registrations.count()
+        number_registered = registrations.filter(status=Registration.REGISTERED).count()
+        number_not_registered = registrations.filter(status=Registration.PENDING).count()
+        latest_update = None # TODO implement
+        return {
+            'total_participants': total_participants,
+            'number_registered': number_registered,
+            'number_not_registered': number_not_registered,
+            'latest_update': latest_update,
+        }
 
     @staticmethod
     def _obj_to_dict(list_of_obj):

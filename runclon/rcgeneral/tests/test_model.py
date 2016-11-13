@@ -234,7 +234,22 @@ class TestRegistration(TestCase):
         })
 
     def test_fetch_statistics_works(self):
-        pass
+        Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        Registration.add(bib="001", first_name="Jason", surname="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+        Registration.register('001')
+
+        stats = Registration.fetch_statistics()
+        self.assertEquals(stats,{
+            'total_participants': 2,
+            'number_registered': 1,
+            'number_not_registered':1,
+            'latest_update': None,
+        })
 
     def test_add_non_unique_entries(self):
         Registration.add(bib="007", first_name="James", surname="Bond", gender="Male", age_category="M40",
