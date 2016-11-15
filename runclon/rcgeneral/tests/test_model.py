@@ -1,5 +1,4 @@
 from django.test import TestCase
-#from rcgeneral.models import Registration
 from rcgeneral.models import Registration
 
 
