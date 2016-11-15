@@ -13,7 +13,7 @@ class Registration(models.Model):
 
     bib = models.CharField(max_length=10, unique=True)
     first_name = models.CharField(max_length=60, default='')
-    surname = models.CharField(max_length=60, default='')
+    last_name = models.CharField(max_length=60, default='')
     gender = models.CharField(max_length=10, default='')
     age_category = models.CharField(max_length=10, default='')
     club = models.CharField(max_length=80, default='')
@@ -25,17 +25,18 @@ class Registration(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "{},{},{}".format(self.bib, self.first_name, self.surname)
+        return "{},{},{}".format(self.bib, self.first_name, self.last_name)
 
     @staticmethod
-    def add(bib='', first_name='', surname='', gender='', age_category='', club='', email='', number=''):
+    def add(bib='', first_name='', last_name='', gender='', age_category='', club='', email='', number=''):
         if not Registration.is_unique(bib):
-            raise ValueError('Duplicate entry! {bib} {first_name} {surname}'.format(bib=bib,first_name=first_name, surname=surname))
+            raise ValueError('Duplicate entry! {bib} {first_name} {last_name}'.format(bib=bib,first_name=first_name, last_name=last_name))
 
-        cust = Registration.objects.create(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category,
+        cust = Registration.objects.create(bib=bib, first_name=first_name, last_name=last_name, gender=gender, age_category=age_category,
                                            club=club, email=email, number=number, status=Registration.PENDING)
 
         cust.save()
+        return cust
 
     @staticmethod
     def get_all_registrations_as_obj():
@@ -100,10 +101,10 @@ class Registration(models.Model):
         return Registration._obj_to_dict(results)
 
     @staticmethod
-    def search_by_surname(text):
-        results = Registration.get_all_registrations_as_obj().filter(surname__contains=text)
-        not_registered = results.filter(status=Registration.PENDING).order_by('surname')
-        registered = results.filter(status=Registration.REGISTERED).order_by('surname')
+    def search_by_last_name(text):
+        results = Registration.get_all_registrations_as_obj().filter(last_name__contains=text)
+        not_registered = results.filter(status=Registration.PENDING).order_by('last_name')
+        registered = results.filter(status=Registration.REGISTERED).order_by('last_name')
         return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
 
     @staticmethod

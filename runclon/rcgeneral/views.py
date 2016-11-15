@@ -51,7 +51,7 @@ def add(request):
     if request.method == 'POST':
         bib = request.POST.get('bib')
         first_name = request.POST.get('first_name')
-        surname = request.POST.get('surname')
+        last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
         age_category = request.POST.get('age_category')
         club = request.POST.get('bib')
@@ -59,7 +59,7 @@ def add(request):
         number = request.POST.get('number')
 
         try:
-            Registration.add(bib=bib, first_name=first_name, surname=surname, gender=gender, age_category=age_category, club=club,
+            Registration.add(bib=bib, first_name=first_name, last_name=last_name, gender=gender, age_category=age_category, club=club,
                              email=email, number=number)
         except Exception as exp:
             print exp
@@ -106,7 +106,7 @@ def search_last_name(request):
     if request.method == 'POST':
         text = request.POST.get('text')
         try:
-            registered, not_registered = Registration.search_by_surname(text)
+            registered, not_registered = Registration.search_by_last_name(text)
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})

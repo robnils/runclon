@@ -85,7 +85,7 @@ function create_table(table_id, data, registered){
         '0': 'id',
         '1': 'bib',
         '2': 'first_name',
-        '3': 'surname',
+        '3': 'last_name',
         '4': 'gender',
         '5': 'age_category',
         '6': 'club',

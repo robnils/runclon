@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^get_registrations', views.get_registrations, name='get_registrations'),
     url(r'^clear_all', views.clear_all, name='clear_all'),
     url(r'^register', views.register, name='register'),
-    url(r'^search_by_last_name', views.search_last_name, name='search'),
-    url(r'^search_by_first_name', views.search_by_first_name, name='search_fname'),
+    url(r'^search_by_last_name', views.search_last_name, name='search_last_name'),
+    url(r'^search_by_first_name', views.search_by_first_name, name='search_first_name'),
     url(r'^fetch_statistics', views.fetch_statistics, name='fetch_statistics'),
 ]
