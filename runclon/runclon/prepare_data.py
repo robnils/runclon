@@ -8,7 +8,6 @@ import random
 os.environ['DJANGO_SETTINGS_MODULE'] = 'runclon.settings'
 django.setup()
 
-from runclon import settings
 from rcgeneral.models import Registration
 
 def read_csv(filepath):
