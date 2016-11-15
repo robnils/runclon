@@ -99,5 +99,6 @@ def generate_random_registration_data(max_participants):
     print "Added {} registrations to table".format(idx + 1)
 
 if __name__ == "__main__":
-    generate_random_registration_data(1)
+    Registration.truncate()
+    generate_random_registration_data(3)
 
