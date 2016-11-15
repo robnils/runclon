@@ -15,9 +15,24 @@ def search_page(request):
 
 def update_status(request):
     if request.method == 'POST':
-        return JsonResponse({'success': True})
-
+        try:
+            stats = Registration.fetch_statistics()
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+        return JsonResponse({'success': True, 'stats': stats})
     return JsonResponse({'success': False, 'reason': 'Must be a valid POST request!'})
+
+
+def fetch_statistics(request):
+    if request.method == 'GET':
+        try:
+            stats = Registration.fetch_statistics()
+        except Exception as exp:
+            print exp
+            return JsonResponse({'success': False, 'reason': exp.message})
+        return JsonResponse({'success': True, 'stats': stats})
+    return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})
 
 
 def register(request):
@@ -91,7 +106,7 @@ def search_last_name(request):
     if request.method == 'POST':
         text = request.POST.get('text')
         try:
-            registered, not_registered = Registration.search_by_last_name(text)
+            registered, not_registered = Registration.search_by_surname(text)
         except Exception as exp:
             print exp
             return JsonResponse({'success': False, 'reason': exp.message})
