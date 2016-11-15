@@ -99,6 +99,10 @@ def generate_random_registration_data(max_participants):
     print "Added {} registrations to table".format(idx + 1)
 
 if __name__ == "__main__":
-    Registration.truncate()
-    generate_random_registration_data(3)
+    # Try clear db if defined, otherwise, move on
+    try:
+        Registration.truncate()
+    except:
+        pass
+    generate_random_registration_data(2000)
 
