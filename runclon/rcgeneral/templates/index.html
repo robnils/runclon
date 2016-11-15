@@ -14,42 +14,33 @@
 {% block content %}
     <div class="container">
         <div class="row" style="width: 100%; margin: 15px 15px">
-            <div class="col-sm-12" style="width: 100%">
-                <input id="first_name" style="text-align:center;" placeholder="first name...">
-                <input id="surname" style="text-align:center;" placeholder="surname...">
-                <input id="bib" style="text-align:center;" placeholder="bib...">
-                <input id="gender" style="text-align:center;" placeholder="gender...">
-                <input id="age_category" style="text-align:center;" placeholder="age category...">
-                <input id="club" style="text-align:center;" placeholder="club...">
-                <input id="email" style="text-align:center;" placeholder="email...">
-                <input id="number" style="text-align:center;" placeholder="number...">
+            <div class="row">
+                <div class="col-xs-3">Total number of participants</div>
+                <div class="col-xs-2" id="total_participants"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Number of registered</div>
+                <div class="col-xs-2" id="number_registered"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Number of unregistered</div>
+                <div class="col-xs-2" id="number_unregistered"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Most recent registration</div>
+                <div class="col-xs-2" id="latest_registration"></div>
             </div>
         </div>
-        <div class="row" style="width: 100%; margin: 15px 15px">
-                <button id="add" class="col-sm-3 btn-success" style="width: 100px; height: 30px;">Add!</button>
-                <button id="view_registrations" class="col-sm-3" style="width: 100px; height: 30px;">View</button>
-                <button id="clear_all" class="col-sm-3 btn-danger" style="width: 100px; height: 30px;">Clear All</button>
-                <button id="register" class="col-sm-3 btn-success" style="width: 100px; height: 30px;">Register</button>
-        </div>
+
     </div>
 
     <script>
 
         $(document).ready(function () {
-            bind_add_button();
-            bind_view_button();
-            bind_clear_all_button();
-            bind_register_button();
-            /*
-             var table = $('#table_id').DataTable();
-             table.search( 'Fiona' ).draw();
-
-             /*
-             $("#table_id").dataTable({
-             bJQueryUI: true,
-             sPaginationType: "full_numbers"
-             });
-             */
+            var url = '/rcgeneral/fetch_statistics'
+            var stats = fetch_statistics(url);
+            //poll_fetch_statistics(url);
+            console.log(stats);
         });
     </script>
 

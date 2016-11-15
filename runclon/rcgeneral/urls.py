@@ -15,5 +15,5 @@ urlpatterns = [
     url(r'^register', views.register, name='register'),
     url(r'^search_by_last_name', views.search_last_name, name='search'),
     url(r'^search_by_first_name', views.search_by_first_name, name='search_fname'),
-
+    url(r'^fetch_statistics', views.fetch_statistics, name='fetch_statistics'),
 ]
