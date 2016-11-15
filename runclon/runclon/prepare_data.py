@@ -100,6 +100,9 @@ def generate_random_registration_data(max_participants):
 
 if __name__ == "__main__":
     # Try clear db if defined, otherwise, move on
-
+    try:
+        Registration.truncate()
+    except:
+        pass
     generate_random_registration_data(2000)
 
