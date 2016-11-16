@@ -101,7 +101,7 @@ def generate_random_registration_data(max_participants):
         age_category = age_category_map[age_idx]
 
         club_idx = random.randrange(0, len(club_map))
-        club = age_category_map[club_idx]
+        club = club_map[club_idx]
 
         email = '{}.{}@TestyMcTestFace.test'.format(first_name, last_name)
         number = random_phone_number(11)
