@@ -27,12 +27,21 @@ function fetch_statistics(url, callback) {
     });
 }
 
-function refresh_ui(stats, $tot_part, $num_reg, $num_pending, $lat_reg) {
+function refresh_ui(stats, $tot_part, $num_reg, $num_pending, $per_reg, $lat_reg) {
     if(stats != null) {
         console.log(stats);
         $tot_part.text(stats['total_participants']);
         $num_reg.text(stats['number_registered']);
         $num_pending.text(stats['number_not_registered']);
+
+        var reg = parseFloat(stats['number_registered']);
+        var not_reg = parseFloat(stats['number_not_registered']);
+
+        var percent_registered = (not_reg / reg) * 100.0;
+        percent_registered = percent_registered.toFixed(2);
+        var per_reg_str = percent_registered.toString() + ' %';
+
+        $per_reg.text(per_reg_str);
         $lat_reg.text(stats['latest_update']);
     } else {
         console.log('Could not refresh UI; stats='+stats);

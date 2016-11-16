@@ -23,8 +23,12 @@
                 <div class="col-xs-2" id="number_registered"></div>
             </div>
             <div class="row">
-                <div class="col-xs-3">Number of unregistered</div>
+                <div class="col-xs-3">Number of pending registrations</div>
                 <div class="col-xs-2" id="number_pending"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Percent registered</div>
+                <div class="col-xs-2" id="percent_registered"></div>
             </div>
             <div class="row">
                 <div class="col-xs-3">Most recent registration</div>
@@ -41,10 +45,11 @@
             var $tp = $('#total_participants');
             var $nr = $('#number_registered');
             var $np = $('#number_pending');
+            var $pr = $('#percent_registered');
             var $lr = $('#latest_registration');
 
             poll_fetch_statistics(url, 3, function (stats) {
-                refresh_ui(stats, $tp, $nr, $np, $lr)
+                refresh_ui(stats, $tp, $nr, $np, $pr, $lr)
             });
         });
     </script>
