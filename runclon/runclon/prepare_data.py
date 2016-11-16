@@ -130,6 +130,6 @@ if __name__ == "__main__":
         Registration.truncate()
     except:
         pass
-    generate_random_registration_data(10, 0.1)
+    generate_random_registration_data(2000, 0.1)
 
 

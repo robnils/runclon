@@ -121,6 +121,8 @@ class Registration(models.Model):
         number_registered = registrations.filter(status=Registration.REGISTERED).count()
         number_not_registered = registrations.filter(status=Registration.PENDING).count()
         latest_update = None # TODO implement
+        percentage_registered = None # TODO implement
+
         return {
             'total_participants': total_participants,
             'number_registered': number_registered,
