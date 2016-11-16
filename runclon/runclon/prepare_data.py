@@ -114,7 +114,7 @@ def generate_random_registration_data(max_participants, registered_parameter=0.0
             print exp
 
         if registered_parameter > 0.0:
-            to_register = random.uniform(0.0, 1.0) >= registered_parameter
+            to_register = random.uniform(0.0, 1.0) >= (1.0 - registered_parameter)
             if to_register:
                 try:
                     Registration.register(bib)
@@ -130,6 +130,6 @@ if __name__ == "__main__":
         Registration.truncate()
     except:
         pass
-    generate_random_registration_data(2000, 0.1)
+    generate_random_registration_data(100, 0.15)
 
 
