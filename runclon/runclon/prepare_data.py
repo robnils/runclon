@@ -1,4 +1,6 @@
 import csv
+import functools
+
 import os
 import django
 import names
@@ -52,6 +54,14 @@ def fetch_data_from_file(path):
         f.close()
 
 
+def random_phone_number(num_digits):
+    rand = functools.partial(random.randint, 0, num_digits)
+    number = '+'
+    for idx in range(0, num_digits):
+        number += str(rand())
+    return number
+
+
 def generate_random_registration_data(max_participants):
     int_to_gender_map = {
         0: 'male',
@@ -65,12 +75,16 @@ def generate_random_registration_data(max_participants):
         4: '60+',
     }
 
+    # Deliberately longer as it's more likely that a runner isn't part of a club
     club_map = {
         0: '',
         1: 'cork',
         2: 'a club',
         3: 'super runners',
         4: 'run4life',
+        5: '',
+        6: '',
+        7: '',
     }
 
     assert max_participants > 1, 'max_participants must be an integer greater than 1!'
@@ -89,8 +103,8 @@ def generate_random_registration_data(max_participants):
         club_idx = random.randrange(0, len(club_map))
         club = age_category_map[club_idx]
 
-        email = 'test@TestyMcTestFace.test'
-        number = '+1234565789123'
+        email = '{}.{}@TestyMcTestFace.test'.format(first_name, last_name)
+        number = random_phone_number(11)
 
         try:
             cust = Registration.add(bib, first_name, last_name, gender, age_category, club, email, number)
@@ -106,4 +120,5 @@ if __name__ == "__main__":
     except:
         pass
     generate_random_registration_data(2000)
+
 
