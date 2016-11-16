@@ -62,7 +62,8 @@ def random_phone_number(num_digits):
     return number
 
 
-def generate_random_registration_data(max_participants):
+def generate_random_registration_data(max_participants, registered_parameter=0.0):
+    assert 0 <= registered_parameter <= 1, 'registered_parameter given outside range!'
     int_to_gender_map = {
         0: 'male',
         1: 'female',
@@ -111,6 +112,16 @@ def generate_random_registration_data(max_participants):
             print "Added {}".format(cust)
         except Exception as exp:
             print exp
+
+        if registered_parameter > 0.0:
+            to_register = random.uniform(0.0, 1.0) >= registered_parameter
+            if to_register:
+                try:
+                    Registration.register(bib)
+                    print 'Registered {}'.format(bib)
+                except Exception as exp:
+                    print exp
+
     print "Added {} registrations to table".format(idx + 1)
 
 if __name__ == "__main__":
@@ -119,6 +130,6 @@ if __name__ == "__main__":
         Registration.truncate()
     except:
         pass
-    generate_random_registration_data(2000)
+    generate_random_registration_data(10, 0.1)
 
 
