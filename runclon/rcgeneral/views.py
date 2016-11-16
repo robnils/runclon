@@ -29,7 +29,6 @@ def fetch_statistics(request):
         try:
             stats = Registration.fetch_statistics()
         except Exception as exp:
-            print exp
             return JsonResponse({'success': False, 'reason': exp.message})
         return JsonResponse({'success': True, 'stats': stats})
     return JsonResponse({'success': False, 'reason': 'Must be a valid GET request!'})

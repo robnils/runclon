@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-3">Number of unregistered</div>
-                <div class="col-xs-2" id="number_unregistered"></div>
+                <div class="col-xs-2" id="number_pending"></div>
             </div>
             <div class="row">
                 <div class="col-xs-3">Most recent registration</div>
@@ -35,12 +35,17 @@
     </div>
 
     <script>
-
         $(document).ready(function () {
-            var url = '/rcgeneral/fetch_statistics'
-            var stats = fetch_statistics(url);
-            //poll_fetch_statistics(url);
-            console.log(stats);
+            var url = '/rcgeneral/fetch_statistics';
+
+            var $tp = $('#total_participants');
+            var $nr = $('#number_registered');
+            var $np = $('#number_pending');
+            var $lr = $('#latest_registration');
+
+            poll_fetch_statistics(url, 3, function (stats) {
+                refresh_ui(stats, $tp, $nr, $np, $lr)
+            });
         });
     </script>
 
