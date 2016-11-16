@@ -73,7 +73,9 @@ def generate_random_registration_data(max_participants):
         4: 'run4life',
     }
 
-    for idx in range(0, max_participants):
+    assert max_participants > 1, 'max_participants must be an integer greater than 1!'
+
+    for idx in range(0, int(max_participants)):
         bib = str(idx)
         gender_rand = random.randrange(0, 2)
         gender = int_to_gender_map[gender_rand]
