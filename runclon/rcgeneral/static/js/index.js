@@ -35,9 +35,9 @@ function refresh_ui(stats, $tot_part, $num_reg, $num_pending, $per_reg, $lat_reg
         $num_pending.text(stats['number_not_registered']);
 
         var reg = parseFloat(stats['number_registered']);
-        var not_reg = parseFloat(stats['number_not_registered']);
+        var total = parseFloat(stats['total_participants']);
 
-        var percent_registered = (not_reg / reg) * 100.0;
+        var percent_registered = (reg / total) * 100.0;
         percent_registered = percent_registered.toFixed(2);
         var per_reg_str = percent_registered.toString() + ' %';
 
