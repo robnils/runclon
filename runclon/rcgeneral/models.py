@@ -19,7 +19,7 @@ class Registration(models.Model):
     club = models.CharField(max_length=80, default='')
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
-    #tshirt_size = models.CharField(max_length=5, default='') # TODO implement
+    #tshirt_size = models.CharField(max_length=10, default='') # TODO implement
     #registered_time = models.CharField(max_length=5, default='') # TODO implement
     status = models.CharField(max_length=50, default=PENDING)
     updated = models.DateTimeField(auto_now_add=True)

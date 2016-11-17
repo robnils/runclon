@@ -63,7 +63,6 @@ class TestRegistration(TestCase):
         regobj = Registration.get_all_registrations_as_obj()
         self.assertEquals(len(regobj), 0, "Registration table should be empty now")
 
-
     def test_delete_registration(self):
         Registration.add(bib="007", first_name="James", last_name="Bond", gender="Male", age_category="M40",
                          club="Her Majesty's Secret Service",
@@ -132,6 +131,7 @@ class TestRegistration(TestCase):
                          club="Welsh Police",
                          email="james.band@wales.waleland", number="+999")
 
+        # Last name
         registered, not_registered = Registration.search_by_last_name("Bo")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 3)
@@ -143,6 +143,15 @@ class TestRegistration(TestCase):
         registered, not_registered = Registration.search_by_last_name("Bont")
         self.assertEquals(len(registered), 0)
         self.assertEquals(len(not_registered), 1)
+
+        # First name
+        registered, not_registered = Registration.search_by_first_name("Ja")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 3)
+
+        registered, not_registered = Registration.search_by_first_name("James")
+        self.assertEquals(len(registered), 0)
+        self.assertEquals(len(not_registered), 2)
 
     def test_search_results_are_correct(self):
         Registration.add(bib="007", first_name="James", last_name="Bond", gender="Male", age_category="M40",
@@ -164,7 +173,72 @@ class TestRegistration(TestCase):
         # Register Bont
         Registration.register("007")
 
+        # Last name
         registered, not_registered = Registration.search_by_last_name("Bo")
+        self.assertEquals(len(registered), 1)
+        self.assertEquals(len(not_registered), 2)
+
+        self.assertEquals(registered[0], {
+            'bib': "007",
+            'first_name': 'James',
+            'last_name': 'Bond',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Her Majesty's Secret Service",
+            "email": "james.bond@mi6.co.uk",
+            'number': "+007",
+            'status': Registration.REGISTERED,
+            'id': 1,
+        })
+
+        self.assertEquals(not_registered[0], {
+            'bib': "999",
+            'first_name': 'James',
+            'last_name': 'Bont',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Welsh Police",
+            "email": "james.band@wales.waleland",
+            'number': "+999",
+            'status': Registration.PENDING,
+            'id': 3,
+        })
+
+        self.assertEquals(not_registered[1], {
+            'bib': "001",
+            'first_name': 'Jason',
+            'last_name': 'Bourne',
+            'gender': 'Male',
+            'age_category': 'M40',
+            "club": "Treadstone",
+            "email": "jason.bourne@cia.gov",
+            'number': "+001",
+            'status': Registration.PENDING,
+            'id': 2,
+        })
+
+    def test_search_by_first_nameresults_are_correct(self):
+        Registration.add(bib="007", first_name="James", last_name="Bond", gender="Male", age_category="M40",
+                         club="Her Majesty's Secret Service",
+                         email="james.bond@mi6.co.uk", number="+007")
+
+        Registration.add(bib="001", first_name="Jason", last_name="Bourne", gender="Male", age_category="M40",
+                         club="Treadstone",
+                         email="jason.bourne@cia.gov", number="+001")
+
+        Registration.add(bib="999", first_name="James", last_name="Bont", gender="Male", age_category="M40",
+                         club="Welsh Police",
+                         email="james.band@wales.waleland", number="+999")
+
+        Registration.add(bib="002", first_name="Robert", last_name="Hilliard", gender="Male", age_category="MS",
+                         club="World Police",
+                         email="robert.hilliard@everything.com", number="+001")
+
+        # Register Bont
+        Registration.register("007")
+
+        # Last name
+        registered, not_registered = Registration.search_by_first_name("Ja")
         self.assertEquals(len(registered), 1)
         self.assertEquals(len(not_registered), 2)
 
