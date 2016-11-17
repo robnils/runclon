@@ -1,3 +1,4 @@
 django
 django_nose
 names
+coverage
