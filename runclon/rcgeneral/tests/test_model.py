@@ -373,3 +373,11 @@ class TestRegistration(TestCase):
                          email="james.bond@mi6.co.uk", number="+007")
         result = Registration.is_unique('007')
         self.assertFalse(result)
+
+    def test_registered_time(self):
+        #Todo
+        pass
+
+    def test_tshirt_size(self):
+        #Todo
+        pass

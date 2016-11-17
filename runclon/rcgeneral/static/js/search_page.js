@@ -92,7 +92,8 @@ function create_table(table_id, data, registered){
         '7': 'email',
         '8': 'number',
         '9': 'status',
-        '10': 'tshirt_size'
+        '10': 'tshirt_size',
+        '11': 'registered_time'
     };
     for(var row_idx = 0; row_idx < data.length; row_idx++){
         var tr = tbody.insertRow();
@@ -104,20 +105,34 @@ function create_table(table_id, data, registered){
             map_idx_to_key[index] = key;
             index++;
         }*/
+
+        // Add column
         for(var col_idx = 0; col_idx < Object.keys(dict).length; col_idx++){
+            if(map_idx_to_key[col_idx] == 'registered_time') {
+                continue;
+            }
+
+            var element = dict[map_idx_to_key[col_idx]];
+            if(registered) {
+               if(map_idx_to_key[col_idx] == 'status') {
+                   element += ' at ' + dict['registered_time'];
+               }
+            }
+
             var td = tr.insertCell(-1);
-            td.appendChild(document.createTextNode(dict[map_idx_to_key[col_idx]]));
+            td.appendChild(document.createTextNode(element));
             //td.style.border = '1px solid black';
             //td.style.width = '600px';
         }
         if(!registered) {
             // Register button
+            delete dict["registered_time"];
+            console.log(dict);
             var td = tr.insertCell(-1);
             var btn_id = 'register_button_' + dict['bib'];
             td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
             bind_register_button(btn_id);
         }
-
     }
     body.appendChild(tbl);
 }

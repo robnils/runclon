@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+import datetime
 from django.db import models
 
 # Create your models here.
@@ -20,9 +22,9 @@ class Registration(models.Model):
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
     tshirt_size = models.CharField(max_length=10, default='')
-    #registered_time = models.CharField(max_length=5, default='') # TODO implement
+    registered_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=50, default=PENDING)
-    updated = models.DateTimeField(auto_now_add=True)
+    #updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{},{},{},{}".format(self.bib, self.first_name, self.last_name, self.tshirt_size)
@@ -51,6 +53,7 @@ class Registration(models.Model):
     def _update_registration(bib, status):
         regobj = Registration.get_registration_as_obj(bib=bib)
         regobj.status = status
+        regobj.registered_time = datetime.datetime.utcnow()
         regobj.save()
 
     @staticmethod
@@ -120,7 +123,12 @@ class Registration(models.Model):
         total_participants = registrations.count()
         number_registered = registrations.filter(status=Registration.REGISTERED).count()
         number_not_registered = registrations.filter(status=Registration.PENDING).count()
-        latest_update = None # TODO implement
+
+        latest_update_list = registrations.filter(status=Registration.REGISTERED).order_by('registered_time')
+        if latest_update_list:
+            latest_update = latest_update_list[0]
+        else:
+            latest_update = None
         percentage_registered = None # TODO implement
 
         return {
