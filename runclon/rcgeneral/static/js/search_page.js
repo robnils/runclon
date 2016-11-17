@@ -91,7 +91,8 @@ function create_table(table_id, data, registered){
         '6': 'club',
         '7': 'email',
         '8': 'number',
-        '9': 'status'
+        '9': 'status',
+        '10': 'tshirt_size'
     };
     for(var row_idx = 0; row_idx < data.length; row_idx++){
         var tr = tbody.insertRow();

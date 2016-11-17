@@ -35,6 +35,7 @@ class TestRegistration(TestCase):
             "email": "james.bond@mi6.co.uk",
             'number': "+007",
             'status': Registration.PENDING,
+            'tshirt_size': '',
         })
 
         self.assertEquals(regdict[1], {
@@ -47,6 +48,7 @@ class TestRegistration(TestCase):
             "email": "jason.bourne@cia.gov",
             'number': "+001",
             'status': Registration.PENDING,
+            'tshirt_size': '',
         })
 
     def test_truncate(self):
@@ -102,6 +104,7 @@ class TestRegistration(TestCase):
             "email": "james.bond@mi6.co.uk",
             'number': "+007",
             'status': Registration.PENDING,
+            'tshirt_size': '',
         })
 
     def test_register(self):
@@ -189,6 +192,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.REGISTERED,
             'id': 1,
+            'tshirt_size': '',
         })
 
         self.assertEquals(not_registered[0], {
@@ -202,6 +206,7 @@ class TestRegistration(TestCase):
             'number': "+999",
             'status': Registration.PENDING,
             'id': 3,
+            'tshirt_size': '',
         })
 
         self.assertEquals(not_registered[1], {
@@ -215,6 +220,7 @@ class TestRegistration(TestCase):
             'number': "+001",
             'status': Registration.PENDING,
             'id': 2,
+            'tshirt_size': '',
         })
 
     def test_search_by_first_nameresults_are_correct(self):
@@ -253,6 +259,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.REGISTERED,
             'id': 1,
+            'tshirt_size': '',
         })
 
         self.assertEquals(not_registered[0], {
@@ -266,6 +273,7 @@ class TestRegistration(TestCase):
             'number': "+999",
             'status': Registration.PENDING,
             'id': 3,
+            'tshirt_size': '',
         })
 
         self.assertEquals(not_registered[1], {
@@ -279,6 +287,7 @@ class TestRegistration(TestCase):
             'number': "+001",
             'status': Registration.PENDING,
             'id': 2,
+            'tshirt_size': '',
         })
 
     def test_search_case_insensitive(self):
@@ -304,6 +313,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.PENDING,
             'id': 1,
+            'tshirt_size': '',
         })
 
     def test_fetch_statistics_works(self):
@@ -350,6 +360,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.PENDING,
             'id': 1,
+            'tshirt_size': '',
         })
 
     def test_is_unique_true(self):

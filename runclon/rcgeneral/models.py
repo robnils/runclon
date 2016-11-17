@@ -19,21 +19,21 @@ class Registration(models.Model):
     club = models.CharField(max_length=80, default='')
     email = models.CharField(max_length=180, default='')
     number = models.CharField(max_length=40, default='')
-    #tshirt_size = models.CharField(max_length=10, default='') # TODO implement
+    tshirt_size = models.CharField(max_length=10, default='')
     #registered_time = models.CharField(max_length=5, default='') # TODO implement
     status = models.CharField(max_length=50, default=PENDING)
     updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "{},{},{}".format(self.bib, self.first_name, self.last_name)
+        return "{},{},{},{}".format(self.bib, self.first_name, self.last_name, self.tshirt_size)
 
     @staticmethod
-    def add(bib='', first_name='', last_name='', gender='', age_category='', club='', email='', number=''):
+    def add(bib='', first_name='', last_name='', gender='', age_category='', club='', email='', number='', tshirt_size=''):
         if not Registration.is_unique(bib):
             raise ValueError('Duplicate entry! {bib} {first_name} {last_name}'.format(bib=bib,first_name=first_name, last_name=last_name))
 
         cust = Registration.objects.create(bib=bib, first_name=first_name, last_name=last_name, gender=gender, age_category=age_category,
-                                           club=club, email=email, number=number, status=Registration.PENDING)
+                                           club=club, email=email, number=number, status=Registration.PENDING, tshirt_size=tshirt_size)
 
         cust.save()
         return cust

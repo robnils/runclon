@@ -64,11 +64,11 @@ def random_phone_number(num_digits):
 
 def generate_random_registration_data(max_participants, registered_parameter=0.0):
     assert 0 <= registered_parameter <= 1, 'registered_parameter given outside range!'
-    int_to_gender_map = {
+    INT_TO_GENDER_MAP = {
         0: 'male',
         1: 'female',
     }
-    age_category_map = {
+    AGE_CATEGORY_MAP = {
         0: '10+',
         1: '18+',
         2: '30+',
@@ -77,7 +77,7 @@ def generate_random_registration_data(max_participants, registered_parameter=0.0
     }
 
     # Deliberately longer as it's more likely that a runner isn't part of a club
-    club_map = {
+    CLUB_MAP = {
         0: '',
         1: 'cork',
         2: 'a club',
@@ -88,27 +88,41 @@ def generate_random_registration_data(max_participants, registered_parameter=0.0
         7: '',
     }
 
+    TSHIRT_SIZE_MAP = {
+        0: 'XXS',
+        1: 'XS',
+        2: 'S',
+        3: 'M',
+        4: 'L',
+        5: 'XL',
+        6: 'XXL',
+        7: 'XXXL',
+    }
+
     assert max_participants > 1, 'max_participants must be an integer greater than 1!'
 
     for idx in range(0, int(max_participants)):
         bib = str(idx)
         gender_rand = random.randrange(0, 2)
-        gender = int_to_gender_map[gender_rand]
+        gender = INT_TO_GENDER_MAP[gender_rand]
 
         first_name = names.get_first_name(gender=gender)
         last_name = names.get_last_name()
 
-        age_idx = random.randrange(0, len(age_category_map))
-        age_category = age_category_map[age_idx]
+        age_idx = random.randrange(0, len(AGE_CATEGORY_MAP))
+        age_category = AGE_CATEGORY_MAP[age_idx]
 
-        club_idx = random.randrange(0, len(club_map))
-        club = club_map[club_idx]
+        club_idx = random.randrange(0, len(CLUB_MAP))
+        club = CLUB_MAP[club_idx]
 
         email = '{}.{}@TestyMcTestFace.test'.format(first_name, last_name)
         number = random_phone_number(11)
 
+        tshirt_size_idx = random.randrange(0, len(TSHIRT_SIZE_MAP))
+        tshirt_size = TSHIRT_SIZE_MAP[tshirt_size_idx]
+
         try:
-            cust = Registration.add(bib, first_name, last_name, gender, age_category, club, email, number)
+            cust = Registration.add(bib, first_name, last_name, gender, age_category, club, email, number, tshirt_size)
             print "Added {}".format(cust)
         except Exception as exp:
             print exp
@@ -130,6 +144,6 @@ if __name__ == "__main__":
         Registration.truncate()
     except:
         pass
-    generate_random_registration_data(100, 0.15)
+    generate_random_registration_data(10, 0.15)
 
 
