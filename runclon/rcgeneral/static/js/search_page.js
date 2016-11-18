@@ -115,7 +115,8 @@ function create_table(table_id, data, registered){
             var element = dict[map_idx_to_key[col_idx]];
             if(registered) {
                if(map_idx_to_key[col_idx] == 'status') {
-                   element += ' at ' + dict['registered_time'];
+                   var registered_time = remove_char_from_text(dict['registered_time'], ['T', 'Z']);
+                   element += ' at ' + registered_time;
                }
             }
 

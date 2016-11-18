@@ -42,7 +42,8 @@ function refresh_ui(stats, $tot_part, $num_reg, $num_pending, $per_reg, $lat_reg
         var per_reg_str = percent_registered.toString() + '%';
 
         $per_reg.text(per_reg_str);
-        $lat_reg.text(stats['latest_update']);
+        var latest_update = remove_char_from_text(stats['latest_update'], ['T', 'Z']);
+        $lat_reg.text(latest_update);
     } else {
         console.log('Could not refresh UI; stats='+stats);
     }
