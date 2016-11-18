@@ -59,7 +59,7 @@ function poll_fetch_statistics(url, refresh_rate_in_seconds, ui_callback) {
         ui_callback(stats);
     });
     setTimeout(function () {
-        poll_fetch_statistics(url, 3000, ui_callback);
-    }, 3000);
+        poll_fetch_statistics(url, 30000, ui_callback);
+    }, 30000);
 }
 

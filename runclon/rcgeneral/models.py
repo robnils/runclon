@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 from __future__ import unicode_literals
 
 import datetime
@@ -26,7 +27,7 @@ class Registration(models.Model):
     status = models.CharField(max_length=50, default=PENDING)
     #updated = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return "{},{},{},{}".format(self.bib, self.first_name, self.last_name, self.tshirt_size)
 
     @staticmethod
@@ -55,7 +56,7 @@ class Registration(models.Model):
     def _update_registration(bib, status):
         regobj = Registration.get_registration_as_obj(bib=bib)
         regobj.status = status
-        regobj.registered_time = datetime.datetime.utcnow()
+        regobj.registered_time = datetime.datetime.now()
         regobj.save()
 
     @staticmethod
@@ -130,8 +131,8 @@ class Registration(models.Model):
         number_not_registered = registrations.filter(status=Registration.PENDING).count()
 
         latest_update_list = registrations.filter(status=Registration.REGISTERED).order_by('registered_time')
-        if latest_update_list:
-            latest_update = latest_update_list[0]
+        if latest_update_list.exists():
+            latest_update = latest_update_list.first().registered_time
         else:
             latest_update = None
         percentage_registered = None # TODO implement

@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*
+from __future__ import unicode_literals
 from django.test import TestCase
 from rcgeneral.models import Registration
-
 
 class TestRegistration(TestCase):
 
@@ -94,7 +95,7 @@ class TestRegistration(TestCase):
 
         # Assert object creation
         regdict = Registration.get_registration_as_dict(bib="007")
-        self.assertEquals(regdict, {
+        self.assertDictEqual(regdict, {
             'bib': "007",
             'first_name': 'James',
             'last_name': 'Bond',
@@ -157,6 +158,7 @@ class TestRegistration(TestCase):
         self.assertEquals(len(not_registered), 2)
 
     def test_search_results_are_correct(self):
+        self.maxDiff = None
         Registration.add(bib="007", first_name="James", last_name="Bond", gender="Male", age_category="M40",
                          club="Her Majesty's Secret Service",
                          email="james.bond@mi6.co.uk", number="+007")
@@ -181,7 +183,7 @@ class TestRegistration(TestCase):
         self.assertEquals(len(registered), 1)
         self.assertEquals(len(not_registered), 2)
 
-        self.assertEquals(registered[0], {
+        self.assertDictEqual(registered[0], {
             'bib': "007",
             'first_name': 'James',
             'last_name': 'Bond',
@@ -330,7 +332,7 @@ class TestRegistration(TestCase):
         self.assertEquals(stats,{
             'total_participants': 2,
             'number_registered': 1,
-            'number_not_registered':1,
+            'number_not_registered': 1,
             'latest_update': None,
         })
 
@@ -375,9 +377,10 @@ class TestRegistration(TestCase):
         self.assertFalse(result)
 
     def test_registered_time(self):
-        #Todo
+        #TODO
         pass
 
     def test_tshirt_size(self):
-        #Todo
+        #TODO
         pass
+
