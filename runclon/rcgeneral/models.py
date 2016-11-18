@@ -45,7 +45,9 @@ class Registration(models.Model):
         return Registration.objects.all()
 
     @staticmethod
-    def get_all_registrations_as_dict(exclude=['updated', 'id']):
+    def get_all_registrations_as_dict(exclude=None):
+        if not exclude:
+            exclude = ['updated', 'id']
         # Return a list of dictionaries representing each object
         return [Registration._serial_model(reg, exclude) for reg in Registration.get_all_registrations_as_obj()]
 
@@ -73,7 +75,10 @@ class Registration(models.Model):
         return Registration._serial_model(regobj, exclude=['id'])
 
     @staticmethod
-    def _serial_model(model_obj, exclude=[]):
+    def _serial_model(model_obj, exclude=None):
+        if not exclude:
+            exclude = []
+
         opts = model_obj._meta.fields
         modeldict = model_to_dict(model_obj, exclude=exclude)
         for m in opts:
