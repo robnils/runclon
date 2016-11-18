@@ -127,10 +127,12 @@ class Registration(models.Model):
     def fetch_statistics():
         registrations = Registration.get_all_registrations_as_obj()
         total_participants = registrations.count()
-        number_registered = registrations.filter(status=Registration.REGISTERED).count()
+
+        registered = registrations.filter(status=Registration.REGISTERED)
+        number_registered = registered.count()
         number_not_registered = registrations.filter(status=Registration.PENDING).count()
 
-        latest_update_list = registrations.filter(status=Registration.REGISTERED).order_by('registered_time')
+        latest_update_list = registered.order_by('-registered_time')
         if latest_update_list.exists():
             latest_update = latest_update_list.first().registered_time
         else:
