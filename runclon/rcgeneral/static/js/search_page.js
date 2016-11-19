@@ -106,7 +106,7 @@ function create_table(table_id, data, registered){
 
         // Add column
         for(var col_idx = 0; col_idx < Object.keys(dict).length; col_idx++){
-            if(map_idx_to_key[col_idx] == 'registered_time') {
+            if(map_idx_to_key[col_idx] == 'registered_time' || map_idx_to_key[col_idx] == 'id') {
                 continue;
             }
 
