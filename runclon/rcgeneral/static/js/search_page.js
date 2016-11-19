@@ -6,14 +6,14 @@ function bind_search_box(search_element_lname, search_element_fname, table_eleme
     $(search_element_lname).keyup(function () {
         // Search by last name
         var text = $(search_element_lname).val();
-        console.log(text);
+        //console.log(text);
         $(search_element_fname).val('');
         perform_search("search_by_last_name", text, table_element_not_registered, table_element_registered);
     });
     $(search_element_fname).keyup(function () {
         // Search by first name
         var text = $(search_element_fname).val();
-        console.log(text);
+        //console.log(text);
         $(search_element_lname).val('');
         perform_search("search_by_first_name", text, table_element_not_registered, table_element_registered);
     });
@@ -36,9 +36,6 @@ function perform_search(search_type, text, table_element_not_registered, table_e
             if (msg['success'] == true) {
                 var registered = msg['registered'];
                 var not_registered = msg['not_registered'];
-
-                console.log(registered);
-                console.log(not_registered);
 
                 generate_table(table_element_not_registered, not_registered, false);
                 generate_table(table_element_registered, registered, true);
@@ -67,7 +64,7 @@ function clear_table(table_id) {
 function generate_table(table_element, data, registered) {
     var table_id = table_element.attr('id');
     //clear_table(table_id);
-    console.log("#" + table_id + " tbody tr");
+    //console.log("#" + table_id + " tbody tr");
     //$("#" + table_id + " tbody tr").remove(); // Clear table
     clear_table(table_id);
     create_table(table_id, data, registered);
@@ -92,12 +89,13 @@ function create_table(table_id, data, registered){
         '7': 'email',
         '8': 'number',
         '9': 'tshirt_size',
-        '10': 'registered_time',
-        '11': 'status'
+        '10': 'status',
+        '11': 'registered_time'
     };
     for(var row_idx = 0; row_idx < data.length; row_idx++){
         var tr = tbody.insertRow();
         var dict = data[row_idx];
+        console.log(dict);
         /*
         var map_idx_to_key = {};
         var index = 0;
@@ -127,8 +125,8 @@ function create_table(table_id, data, registered){
         }
         if(!registered) {
             // Register button
-            delete dict["registered_time"];
-            console.log(dict);
+            //delete dict["registered_time"];
+            //console.log(dict);
             var td = tr.insertCell(-1);
             var btn_id = 'register_button_' + dict['bib'];
             td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
