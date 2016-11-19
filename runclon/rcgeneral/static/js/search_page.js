@@ -39,6 +39,16 @@ function perform_search(search_type, text, table_element_not_registered, table_e
 
                 generate_table(table_element_not_registered, not_registered, false);
                 generate_table(table_element_registered, registered, true);
+
+                if(registered.length == 0) {
+                    console.log('No results found for registered');
+                    add_row_to_table(table_element_registered)
+                }
+
+                if(not_registered.length == 0) {
+                    console.log('No results found for not_registered');
+                    add_row_to_table(table_element_not_registered)
+                }
                 //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
             } else {
                 console.log("failed, clearing...");
@@ -68,6 +78,16 @@ function generate_table(table_element, data, registered) {
     //$("#" + table_id + " tbody tr").remove(); // Clear table
     clear_table(table_id);
     create_table(table_id, data, registered);
+}
+
+function add_row_to_table(table_element) {
+    var table_id = table_element.attr('id');
+    //var  tbl  = document.createElement('table');
+    var tbl = document.getElementById(table_id);
+    var tbody = tbl.getElementsByTagName('tbody')[0];
+    var tr = tbody.insertRow();
+    var td = tr.insertCell(0);
+    td.appendChild(document.createTextNode('No results found'));
 }
 
 function create_table(table_id, data, registered){
