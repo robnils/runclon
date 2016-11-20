@@ -34,7 +34,7 @@
         </div>
 
         <div class="row" style="width: 100%; margin: 15px 15px">
-            <table class="table" id="table_results_not_registered" width="100%">
+            <table class="table" id="table_results_pending" width="100%">
                 <caption>Pending registrations...</caption>
                 <thead>
                     <tr>
@@ -83,7 +83,7 @@
 
     <script>
         $(document).ready(function () {
-            bind_search_box($("#search_last_name"), $("#search_fname"), $("#table_results_not_registered"), $("#table_results_registered"));
+            bind_search_box($("#search_last_name"), $("#search_fname"), $("#table_results_pending"), $("#table_results_registered"));
         });
     </script>
 

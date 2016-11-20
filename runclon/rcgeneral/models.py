@@ -135,16 +135,16 @@ class Registration(models.Model):
     @staticmethod
     def search_by_last_name(text):
         results = Registration.get_all_registrations_as_obj().filter(last_name__contains=text)
-        not_registered = results.filter(status=Registration.PENDING).order_by('last_name')
+        pending = results.filter(status=Registration.PENDING).order_by('last_name')
         registered = results.filter(status=Registration.REGISTERED).order_by('last_name')
-        return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
+        return Registration._obj_to_dict(registered), Registration._obj_to_dict(pending)
 
     @staticmethod
     def search_by_first_name(text):
         results = Registration.get_all_registrations_as_obj().filter(first_name__contains=text)
-        not_registered = results.filter(status=Registration.PENDING).order_by('first_name')
+        pending = results.filter(status=Registration.PENDING).order_by('first_name')
         registered = results.filter(status=Registration.REGISTERED).order_by('first_name')
-        return Registration._obj_to_dict(registered), Registration._obj_to_dict(not_registered)
+        return Registration._obj_to_dict(registered), Registration._obj_to_dict(pending)
 
     @staticmethod
     def fetch_statistics():
@@ -153,7 +153,7 @@ class Registration(models.Model):
 
         registered = registrations.filter(status=Registration.REGISTERED)
         number_registered = registered.count()
-        number_not_registered = registrations.filter(status=Registration.PENDING).count()
+        number_pending = registrations.filter(status=Registration.PENDING).count()
 
         latest_update_list = registered.order_by('-registered_time')
         if latest_update_list.exists():
@@ -165,7 +165,7 @@ class Registration(models.Model):
         return {
             'total_participants': total_participants,
             'number_registered': number_registered,
-            'number_not_registered': number_not_registered,
+            'number_pending': number_pending,
             'latest_update': latest_update,
         }
 

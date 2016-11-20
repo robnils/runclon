@@ -139,26 +139,26 @@ class TestRegistration(TestCase):
                          email="james.band@wales.waleland", number="+999")
 
         # Last name
-        registered, not_registered = Registration.search_by_last_name("Bo")
+        registered, pending = Registration.search_by_last_name("Bo")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 3)
+        self.assertEquals(len(pending), 3)
 
-        registered, not_registered = Registration.search_by_last_name("Bon")
+        registered, pending = Registration.search_by_last_name("Bon")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 2)
+        self.assertEquals(len(pending), 2)
 
-        registered, not_registered = Registration.search_by_last_name("Bont")
+        registered, pending = Registration.search_by_last_name("Bont")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 1)
+        self.assertEquals(len(pending), 1)
 
         # First name
-        registered, not_registered = Registration.search_by_first_name("Ja")
+        registered, pending = Registration.search_by_first_name("Ja")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 3)
+        self.assertEquals(len(pending), 3)
 
-        registered, not_registered = Registration.search_by_first_name("James")
+        registered, pending = Registration.search_by_first_name("James")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 2)
+        self.assertEquals(len(pending), 2)
 
     def test_search_results_are_correct(self):
         self.maxDiff = None
@@ -182,9 +182,9 @@ class TestRegistration(TestCase):
         Registration.register("007")
 
         # Last name
-        registered, not_registered = Registration.search_by_last_name("Bo")
+        registered, pending = Registration.search_by_last_name("Bo")
         self.assertEquals(len(registered), 1)
-        self.assertEquals(len(not_registered), 2)
+        self.assertEquals(len(pending), 2)
 
         regobj = Registration.get_registration_as_obj('007')
         registered_time = regobj.registered_time
@@ -203,7 +203,7 @@ class TestRegistration(TestCase):
             'registered_time': registered_time,
         })
 
-        self.assertEquals(not_registered[0], {
+        self.assertEquals(pending[0], {
             'bib': "999",
             'first_name': 'James',
             'last_name': 'Bont',
@@ -218,7 +218,7 @@ class TestRegistration(TestCase):
             'registered_time': None
         })
 
-        self.assertEquals(not_registered[1], {
+        self.assertEquals(pending[1], {
             'bib': "001",
             'first_name': 'Jason',
             'last_name': 'Bourne',
@@ -254,9 +254,9 @@ class TestRegistration(TestCase):
         Registration.register("007")
 
         # Last name
-        registered, not_registered = Registration.search_by_first_name("Ja")
+        registered, pending = Registration.search_by_first_name("Ja")
         self.assertEquals(len(registered), 1)
-        self.assertEquals(len(not_registered), 2)
+        self.assertEquals(len(pending), 2)
 
         regobj = Registration.get_registration_as_obj('007')
         registered_time = regobj.registered_time
@@ -275,7 +275,7 @@ class TestRegistration(TestCase):
             'registered_time': registered_time
         })
 
-        self.assertEquals(not_registered[0], {
+        self.assertEquals(pending[0], {
             'bib': "999",
             'first_name': 'James',
             'last_name': 'Bont',
@@ -290,7 +290,7 @@ class TestRegistration(TestCase):
             'registered_time': None
         })
 
-        self.assertEquals(not_registered[1], {
+        self.assertEquals(pending[1], {
             'bib': "001",
             'first_name': 'Jason',
             'last_name': 'Bourne',
@@ -314,10 +314,10 @@ class TestRegistration(TestCase):
                          club="Treadstone",
                          email="jason.bourne@cia.gov", number="+001")
 
-        registered, not_registered = Registration.search_by_last_name("bON")
+        registered, pending = Registration.search_by_last_name("bON")
         self.assertEquals(len(registered), 0)
-        self.assertEquals(len(not_registered), 1)
-        self.assertEquals(not_registered[0], {
+        self.assertEquals(len(pending), 1)
+        self.assertEquals(pending[0], {
             'bib': "007",
             'first_name': 'James',
             'last_name': 'Bond',
@@ -347,7 +347,7 @@ class TestRegistration(TestCase):
         self.assertEquals(stats, {
             'total_participants': 2,
             'number_registered': 1,
-            'number_not_registered': 1,
+            'number_pending': 1,
             'latest_update': regobj.registered_time,
         })
 

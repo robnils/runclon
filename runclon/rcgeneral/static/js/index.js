@@ -32,7 +32,7 @@ function refresh_ui(stats, $tot_part, $num_reg, $num_pending, $per_reg, $lat_reg
         console.log(stats);
         $tot_part.text(stats['total_participants']);
         $num_reg.text(stats['number_registered']);
-        $num_pending.text(stats['number_not_registered']);
+        $num_pending.text(stats['number_pending']);
 
         var reg = parseFloat(stats['number_registered']);
         var total = parseFloat(stats['total_participants']);

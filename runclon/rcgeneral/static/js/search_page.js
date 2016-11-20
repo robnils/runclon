@@ -1,26 +1,26 @@
 /**
  * Created by rob on 2016-09-07.
  */
-function bind_search_box(search_element_lname, search_element_fname, table_element_not_registered, table_element_registered) {
+function bind_search_box(search_element_lname, search_element_fname, table_element_pending, table_element_registered) {
 
     $(search_element_lname).keyup(function () {
         // Search by last name
         var text = $(search_element_lname).val();
         //console.log(text);
         $(search_element_fname).val('');
-        perform_search("search_by_last_name", text, table_element_not_registered, table_element_registered);
+        perform_search("search_by_last_name", text, table_element_pending, table_element_registered);
     });
     $(search_element_fname).keyup(function () {
         // Search by first name
         var text = $(search_element_fname).val();
         //console.log(text);
         $(search_element_lname).val('');
-        perform_search("search_by_first_name", text, table_element_not_registered, table_element_registered);
+        perform_search("search_by_first_name", text, table_element_pending, table_element_registered);
     });
 
 }
 
-function perform_search(search_type, text, table_element_not_registered, table_element_registered) {
+function perform_search(search_type, text, table_element_pending, table_element_registered) {
     console.log(text);
     if (text.length > 0) {
         console.log("Searching by " + search_type + " with " + text + "...");
@@ -35,9 +35,9 @@ function perform_search(search_type, text, table_element_not_registered, table_e
         .done(function (msg) {
             if (msg['success'] == true) {
                 var registered = msg['registered'];
-                var not_registered = msg['not_registered'];
+                var pending = msg['pending'];
 
-                generate_table(table_element_not_registered, not_registered, false);
+                generate_table(table_element_pending, pending, false);
                 generate_table(table_element_registered, registered, true);
 
                 if(registered.length == 0) {
@@ -45,14 +45,14 @@ function perform_search(search_type, text, table_element_not_registered, table_e
                     add_row_to_table(table_element_registered)
                 }
 
-                if(not_registered.length == 0) {
-                    console.log('No results found for not_registered');
-                    add_row_to_table(table_element_not_registered)
+                if(pending.length == 0) {
+                    console.log('No results found for pending');
+                    add_row_to_table(table_element_pending)
                 }
                 //swal({title: "Success", text: "Registered!", timer: 3000, type: "success"});
             } else {
                 console.log("failed, clearing...");
-                clear_table(table_id_not_registered);
+                clear_table(table_id_pending);
                 clear_table(table_id_registered);
                 //swal({title: "Could not register user!", text: msg['reason'], timer: 3000, type: "error"});
             }
@@ -60,9 +60,9 @@ function perform_search(search_type, text, table_element_not_registered, table_e
         });
     } else {
         // Clear tables
-        var table_id_not_registered = table_element_not_registered.attr('id');
+        var table_id_pending = table_element_pending.attr('id');
         var table_id_registered = table_element_registered.attr('id');
-        clear_table(table_id_not_registered);
+        clear_table(table_id_pending);
         clear_table(table_id_registered);
     }
 }
