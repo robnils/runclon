@@ -37,6 +37,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.PENDING,
             'tshirt_size': '',
+            'registered_time': None,
         })
 
         self.assertEquals(regdict[1], {
@@ -50,6 +51,7 @@ class TestRegistration(TestCase):
             'number': "+001",
             'status': Registration.PENDING,
             'tshirt_size': '',
+            'registered_time': None,
         })
 
     def test_truncate(self):
@@ -106,6 +108,7 @@ class TestRegistration(TestCase):
             'number': "+007",
             'status': Registration.PENDING,
             'tshirt_size': '',
+            'registered_time': None,
         })
 
     def test_register(self):
@@ -183,6 +186,8 @@ class TestRegistration(TestCase):
         self.assertEquals(len(registered), 1)
         self.assertEquals(len(not_registered), 2)
 
+        regobj = Registration.get_registration_as_obj('007')
+        registered_time = regobj.registered_time
         self.assertDictEqual(registered[0], {
             'bib': "007",
             'first_name': 'James',
@@ -195,6 +200,7 @@ class TestRegistration(TestCase):
             'status': Registration.REGISTERED,
             'id': 1,
             'tshirt_size': '',
+            'registered_time': registered_time,
         })
 
         self.assertEquals(not_registered[0], {
@@ -209,6 +215,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 3,
             'tshirt_size': '',
+            'registered_time': None
         })
 
         self.assertEquals(not_registered[1], {
@@ -223,6 +230,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 2,
             'tshirt_size': '',
+            'registered_time': None
         })
 
     def test_search_by_first_nameresults_are_correct(self):
@@ -250,6 +258,8 @@ class TestRegistration(TestCase):
         self.assertEquals(len(registered), 1)
         self.assertEquals(len(not_registered), 2)
 
+        regobj = Registration.get_registration_as_obj('007')
+        registered_time = regobj.registered_time
         self.assertEquals(registered[0], {
             'bib': "007",
             'first_name': 'James',
@@ -262,6 +272,7 @@ class TestRegistration(TestCase):
             'status': Registration.REGISTERED,
             'id': 1,
             'tshirt_size': '',
+            'registered_time': registered_time
         })
 
         self.assertEquals(not_registered[0], {
@@ -276,6 +287,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 3,
             'tshirt_size': '',
+            'registered_time': None
         })
 
         self.assertEquals(not_registered[1], {
@@ -290,6 +302,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 2,
             'tshirt_size': '',
+            'registered_time': None
         })
 
     def test_search_case_insensitive(self):
@@ -316,6 +329,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 1,
             'tshirt_size': '',
+            'registered_time': None,
         })
 
     def test_fetch_statistics_works(self):
@@ -327,13 +341,14 @@ class TestRegistration(TestCase):
                          club="Treadstone",
                          email="jason.bourne@cia.gov", number="+001")
         Registration.register('001')
+        regobj = Registration.get_registration_as_obj('001')
 
         stats = Registration.fetch_statistics()
-        self.assertEquals(stats,{
+        self.assertEquals(stats, {
             'total_participants': 2,
             'number_registered': 1,
             'number_not_registered': 1,
-            'latest_update': None,
+            'latest_update': regobj.registered_time,
         })
 
     def test_add_non_unique_entries(self):
@@ -363,6 +378,7 @@ class TestRegistration(TestCase):
             'status': Registration.PENDING,
             'id': 1,
             'tshirt_size': '',
+            'registered_time': None,
         })
 
     def test_is_unique_true(self):
@@ -384,3 +400,6 @@ class TestRegistration(TestCase):
         #TODO
         pass
 
+    def test_is_registered(self):
+        # todo
+        pass

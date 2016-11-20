@@ -48,7 +48,7 @@ class Registration(models.Model):
     @staticmethod
     def get_all_registrations_as_dict(exclude=None):
         if not exclude:
-            exclude = ['updated', 'id']
+            exclude = ['updated', 'id', 'registered_time']
         # Return a list of dictionaries representing each object
         return [Registration._serial_model(reg, exclude) for reg in Registration.get_all_registrations_as_obj()]
 
@@ -60,10 +60,17 @@ class Registration(models.Model):
         regobj.save()
 
     @staticmethod
+    def _is_registered(bib):
+        regobj = Registration.get_registration_as_obj(bib=bib)
+        return regobj.status == Registration.REGISTERED
+
+    @staticmethod
     def register(bib):
         # TODO add proper validation
         if not bib:
             raise Exception("Bib number cannot be None!")
+        if Registration._is_registered(bib):
+            return ValueError('User is already registered!')
         Registration._update_registration(bib=bib, status=Registration.REGISTERED)
 
     @staticmethod
@@ -90,7 +97,23 @@ class Registration(models.Model):
                         modeldict[m.name] = Registration._serial_model(foreignkey)
                     except:
                         pass
-        return modeldict
+        return Registration.dict_to_unicode(modeldict)
+
+    @staticmethod
+    def dict_to_unicode(dict):
+        new_dict = {}
+        for elem in dict:
+            if isinstance(elem, basestring):
+                k = unicode(elem)
+            else:
+                k = elem
+
+            if isinstance(dict[elem], basestring):
+                v = unicode(dict[elem])
+            else:
+                v = dict[elem]
+            new_dict[k] = v
+        return new_dict
 
     @staticmethod
     def truncate():
