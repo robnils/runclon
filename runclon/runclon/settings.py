@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_nose',
     'rcgeneral',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +127,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Data file
 #PATH_TO_DATA = os.path.join(PROJECT_DIR, 'reg.csv')
+GOOGLE_ANALYTICS_ID = None
+GMAIL_USER = None
+GMAIL_PASSWORD = None
+DEFAULT_FROM_EMAIL = None
