@@ -116,20 +116,13 @@ function create_table(table_id, data, registered){
         var tr = tbody.insertRow();
         var dict = data[row_idx];
         console.log(dict);
-        /*
-        var map_idx_to_key = {};
-        var index = 0;
-        for(var key in dict) {
-            map_idx_to_key[index] = key;
-            index++;
-        }*/
-
         // Add column
         for(var col_idx = 0; col_idx < Object.keys(dict).length; col_idx++){
             if(map_idx_to_key[col_idx] == 'registered_time' || map_idx_to_key[col_idx] == 'id') {
                 continue;
             }
 
+            // If registered, add registration time
             var element = dict[map_idx_to_key[col_idx]];
             if(registered) {
                if(map_idx_to_key[col_idx] == 'status') {
@@ -140,19 +133,18 @@ function create_table(table_id, data, registered){
                }
             }
 
-            var td = tr.insertCell(-1);
-            td.appendChild(document.createTextNode(element));
+            // If not registered and the current index refers to "status", show register button
+            if(map_idx_to_key[col_idx] == 'status' && !registered) {
+                var td = tr.insertCell(-1);
+                var btn_id = 'register_button_' + dict['bib'];
+                td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
+                bind_register_button(btn_id);
+            } else {
+                var td = tr.insertCell(-1);
+                td.appendChild(document.createTextNode(element));
+            }
             //td.style.border = '1px solid black';
             //td.style.width = '600px';
-        }
-        if(!registered) {
-            // Register button
-            //delete dict["registered_time"];
-            //console.log(dict);
-            var td = tr.insertCell(-1);
-            var btn_id = 'register_button_' + dict['bib'];
-            td.innerHTML = "<button class='btn-primary' id=" + btn_id + ">REGISTER</button>";
-            bind_register_button(btn_id);
         }
     }
     body.appendChild(tbl);
