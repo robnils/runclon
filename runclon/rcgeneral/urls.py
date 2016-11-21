@@ -4,9 +4,8 @@ from . import views
 
 urlpatterns = [
     # Pages
+    url(r'^$', views.search_page, name='default'),
     url(r'^index', views.index_page, name='index'),
-    url(r'^$', views.index_page),
-    url(r'^$rcgeneral', views.index_page),
     url(r'^search_page', views.search_page, name='search_page'),
 
     # Views
