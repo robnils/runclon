@@ -160,7 +160,6 @@ class Registration(models.Model):
             latest_update = latest_update_list.first().registered_time
         else:
             latest_update = None
-        percentage_registered = None # TODO implement
 
         return {
             'total_participants': total_participants,
