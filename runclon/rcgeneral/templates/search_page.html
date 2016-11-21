@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'>
     -->
     <script src='{% static "js/datatables.js" %}'></script>
-    <link rel="stylesheet" type="text/css" href='{% static "css/datatables.css" %}'>
 {% endblock %}
 
 {% block content %}
@@ -21,20 +20,20 @@
     </style>
 
     <div class="container">
-        <div class="row" style="width: 100%; margin: 0px 0px 0px 50px;">
+        <div class="row">
             <div class="col-xs-12 col-md-5">
-                <input id="search_fname" style="width: 100%; text-align:center;" placeholder="enter first name...">
+                <input class="btn-block" id="search_fname" style="text-align:center;" placeholder="enter first name...">
             </div>
             <div class="col-xs-12 col-md-2 text-center">
                or
             </div>
             <div class="col-xs-12 col-md-5">
-                <input id="search_last_name" style="width: 100%; text-align:center;" placeholder="enter last name...">
+                <input class="btn-block" id="search_last_name" style="text-align:center;" placeholder="enter last name...">
             </div>
         </div>
 
-        <div class="row" style="width: 100%; margin: 15px 15px">
-            <table class="table" id="table_results_pending" width="100%">
+        <div class="row">
+            <table class="table" id="table_results_pending">
                 <caption>Pending registrations...</caption>
                 <thead>
                     <tr>
@@ -57,8 +56,8 @@
         </div>
 
 
-        <div class="row" style="width: 100%; margin: 15px 15px">
-            <table class="table" id="table_results_registered"  width="100%">
+        <div class="row">
+            <table class="table" id="table_results_registered">
                 <caption>Registered</caption>
                  <thead>
                     <tr>
